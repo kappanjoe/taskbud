@@ -5,19 +5,16 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon ./src/index.js",
-    "migrate": "knex migrate:latest",
-    "seed": "knex seed:run",
-    "safeseed": "knex seed:run --specific=000-init.js"
+    "dev": "nodemon ./src/index.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "knex": "^2.4.2",
-    "pg": "^8.10.0"
+    "mongodb": "^5.2.0"
   },
   "devDependencies": {
+    "@types/node": "^18.15.11",
     "nodemon": "^2.0.22"
   }
 }
