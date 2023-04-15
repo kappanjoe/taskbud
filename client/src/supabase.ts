@@ -1,9 +1,4 @@
-import { createClient, SupabaseClient, User } from '@supabase/supabase-js';
-
-export type SupabaseContext = {
-	client: SupabaseClient,
-	user: User | null
-};
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const config = {
 	supabaseUrl: process.env.REACT_APP_SUPABASE_URL!,
