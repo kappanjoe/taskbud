@@ -11,7 +11,8 @@
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.0.3",
-    "mongodb": "^5.2.0"
+    "mongodb": "^5.2.0",
+    "socket.io": "^4.6.1"
   },
   "devDependencies": {
     "@types/node": "^18.15.11",
