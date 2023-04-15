@@ -142,3 +142,12 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+
+# OSX files
+.DS_Store
+._.DS_Store
+*.fuse_*
+
+# Certificates
+*.pem
