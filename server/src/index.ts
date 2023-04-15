@@ -17,13 +17,18 @@ io.on('connection', (socket) => {
 			const collection = database.collection('customers');
 			const docCount = await collection.countDocuments({});
 			console.log(docCount);
+			socket.emit("world");
 			// perform actions using client
 		} finally {
 			// Ensures that the client will close when you finish/error
 			await client.close();
 		}
 	};
-	run(client).catch(console.dir);
+
+	socket.on("hello", () => {
+		run(client).catch(console.dir);
+	});
+
 });
 
-http.listen(4000);
+http.listen(4000, () => console.log('Port 4000 is now occupied.'));
