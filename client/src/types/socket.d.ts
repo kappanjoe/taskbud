@@ -6,4 +6,5 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
 	hello: () => void;
+	newUser: ({ uid: string }) => void;
 }

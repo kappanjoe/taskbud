@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import { socket } from '../socket';
 
 function SignUp() {
 	const navigate = useNavigate();
@@ -14,11 +15,12 @@ function SignUp() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { error } = await auth.signUp({ email, password });
+		const { data, error } = await auth.signUp({ email, password });
 
 		if (error) {
 			console.error(error);
 		} else {
+			socket.emit('newUser', { uid: data.user.id });
 			navigate('/home');
 		}
 	};

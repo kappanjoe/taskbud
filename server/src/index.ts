@@ -1,32 +1,50 @@
 import { createServer } from 'http';
 import { Server } from 'socket.io';
-import { MongoClient } from 'mongodb';
 import { client } from './mongodb';
 require('dotenv').config();
 
 const http = createServer();
 const io = new Server(http, {
-	// options
+	// REMOVE BEFORE RELEASE
+	cors: {
+		origin: "http://localhost:3000"
+	}
 });
 
 io.on('connection', (socket) => {
-	const run = async (client: MongoClient) => {
+
+	socket.on('hello', async () => {
 		try {
 			await client.connect();
-			const database = client.db(process.env.MONGO_DB_NAME);
-			const collection = database.collection('customers');
-			const docCount = await collection.countDocuments({});
-			console.log(docCount);
-			socket.emit("world");
-			// perform actions using client
+			const response = await client
+				.db(process.env.MONGO_DB_NAME)
+				.collection('users')
+				.countDocuments({});
+
+			console.log('This many users: ', response);
+			socket.emit('world');
+		} catch {
+			console.dir;
 		} finally {
-			// Ensures that the client will close when you finish/error
 			await client.close();
 		}
-	};
+	});
 
-	socket.on("hello", () => {
-		run(client).catch(console.dir);
+	socket.on('newUser', async (user: {}) => {
+		try {
+			await client.connect();
+			const response = await client
+				.db(process.env.MONGO_DB_NAME)
+				.collection('users')
+				.insertOne(user);
+
+			console.log('New user: ', response);
+			socket.emit('userAdded', response);
+		} catch {
+			console.dir;
+		} finally {
+			await client.close();
+		}
 	});
 
 });
