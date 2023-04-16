@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 
 function Home() {
-	const { client, user } = useAuth();
+	const { auth, user } = useAuth();
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
 		try {
-			client.auth.signOut();
+			auth.signOut();
 			navigate('/');
 		} catch (err) {
 			console.error(err);

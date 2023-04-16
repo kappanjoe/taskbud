@@ -4,7 +4,7 @@ import { supabaseClient } from "../supabase";
 import { SupabaseContext } from "../types/supabase";
 
 export const AuthContext = createContext<SupabaseContext>({
-	client: supabaseClient,
+	auth: supabaseClient.auth,
 	user: null
 });
 
@@ -30,7 +30,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 		};
 	}, [session?.user]);
 
-	return <AuthContext.Provider value={{ client: supabaseClient, user }} >
+	return <AuthContext.Provider value={{ auth: supabaseClient.auth, user }} >
 		{ children }
 	</AuthContext.Provider>
 };

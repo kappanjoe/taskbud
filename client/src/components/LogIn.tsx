@@ -9,12 +9,12 @@ function LogIn() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const { client } = useAuth();
+	const { auth } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { error } = await client.auth.signInWithPassword({ email, password });
+		const { error } = await auth.signInWithPassword({ email, password });
 
 		if (error) {
 			console.error(error);

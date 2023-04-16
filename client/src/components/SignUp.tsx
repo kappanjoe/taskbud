@@ -9,12 +9,12 @@ function SignUp() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 
-	const { client } = useAuth();
+	const { auth } = useAuth();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { error } = await client.auth.signUp({ email, password });
+		const { error } = await auth.signUp({ email, password });
 
 		if (error) {
 			console.error(error);

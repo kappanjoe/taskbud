@@ -1,4 +1,4 @@
 export interface SupabaseContext {
-	client: SupabaseClient;
+	auth: SupabaseAuthClient;
 	user: User | null
 };
