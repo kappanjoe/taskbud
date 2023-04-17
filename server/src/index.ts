@@ -1,20 +1,15 @@
-import express from 'express';
-import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { client } from './mongodb';
 require('dotenv').config();
 
-const PORT = process.env.PORT || 4000;
+const PORT = parseInt(process.env.PORT!) || 4000;
 
-const app = express();
-const http = createServer(app);
-
-const io = new Server(http, {
+const io = new Server(PORT, {
 	serveClient: false,
 	cors: {
 		origin: process.env.NODE_ENV === "development"
 			? "http://localhost:3000"
-			: process.env.HOST_URL
+			: process.env.APP_URL
 	}
 });
 
@@ -55,5 +50,3 @@ io.on('connection', (socket) => {
 	});
 
 });
-
-http.listen(PORT, () => console.log(`Port ${PORT} is now occupied.`));
