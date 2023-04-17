@@ -7,7 +7,7 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-app.use('/', express.static(__dirname + '../../client/build'));
+app.use('*', express.static(__dirname + '../../client/build'));
 
 const http = createServer(app);
 
