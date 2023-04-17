@@ -5,7 +5,6 @@ require('dotenv').config();
 const PORT = parseInt(process.env.PORT!) || 4000;
 
 const io = new Server(PORT, {
-	serveClient: false,
 	cors: {
 		origin: process.env.NODE_ENV === "development"
 			? "http://localhost:3000"
