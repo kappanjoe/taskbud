@@ -19,7 +19,7 @@ function LogIn() {
 		if (error) {
 			console.error(error);
 		} else {
-			navigate('/home');
+			navigate('/');
 		}
 	};
 
