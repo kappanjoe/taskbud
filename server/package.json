@@ -8,7 +8,6 @@
     "dev": "nodemon ./src/index.ts",
     "prebuild": "cd ../client",
     "build": "npm run build",
-    "postbuild": "cd ../server",
     "start": "ts-node --transpile-only ./src/index.ts"
   },
   "author": "",
