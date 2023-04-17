@@ -6,8 +6,6 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/index.ts",
-    "prebuild": "cd ../client",
-    "build": "npm run build",
     "start": "ts-node --transpile-only ./src/index.ts"
   },
   "author": "",
