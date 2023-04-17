@@ -1,15 +1,22 @@
+import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import { client } from './mongodb';
 require('dotenv').config();
 
-const http = createServer();
+const PORT = process.env.PORT || 4000;
+
+const app = express();
+const http = createServer(app);
+
 const io = new Server(http, {
 	// REMOVE BEFORE RELEASE
 	cors: {
 		origin: "http://localhost:3000"
 	}
 });
+
+app.use('/', express.static(__dirname + '../../client/build'));
 
 io.on('connection', (socket) => {
 
@@ -49,4 +56,4 @@ io.on('connection', (socket) => {
 
 });
 
-http.listen(4000, () => console.log('Port 4000 is now occupied.'));
+http.listen(PORT, () => console.log(`Port ${PORT} is now occupied.`));
