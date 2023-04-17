@@ -7,6 +7,8 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 const app = express();
+app.use('/', express.static(__dirname + '../../client/build'));
+
 const http = createServer(app);
 
 const io = new Server(http, {
@@ -15,8 +17,6 @@ const io = new Server(http, {
 		origin: "http://localhost:3000"
 	}
 });
-
-app.use('/', express.static(__dirname + '../../client/build'));
 
 io.on('connection', (socket) => {
 
