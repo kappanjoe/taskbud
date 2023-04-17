@@ -7,14 +7,14 @@ require('dotenv').config();
 const PORT = process.env.PORT || 4000;
 
 const app = express();
-app.use('*', express.static(__dirname + '../../client/build'));
-
 const http = createServer(app);
 
 const io = new Server(http, {
-	// REMOVE BEFORE RELEASE
+	serveClient: false,
 	cors: {
-		origin: "http://localhost:3000"
+		origin: process.env.NODE_ENV === "development"
+			? "http://localhost:3000"
+			: process.env.HOST_URL
 	}
 });
 
