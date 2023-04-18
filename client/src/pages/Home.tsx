@@ -28,6 +28,7 @@ function Home(props: { taskList: TaskList }) {
 					: <button onClick={() => navigate('/login')}>Log In</button>
 			}
 			<TaskListView taskList={ taskList } />
+			<button onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)
 };
