@@ -1,10 +1,23 @@
 import React, { useState } from 'react';
-import { Task, TaskList } from '../types/common';
+import { Task } from '../types/classes';
+import { useTaskList } from '../contexts/UserList';
 
 function TaskView(props: { task: Task }) {
   const { body, completed, memo, start, due } = props.task;
+  const { updateTask } = useTaskList();
 
   const [isCompleted, setIsCompleted] = useState(completed);
+
+  const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    e.preventDefault();
+
+    let newCompleted = !isCompleted;
+    setIsCompleted(newCompleted);
+
+    let newTask = props.task;
+    newTask.completed = newCompleted;
+    updateTask(newTask);
+  };
   
   return (
     <div className="task">
@@ -13,9 +26,7 @@ function TaskView(props: { task: Task }) {
           className="task-checkbox"
           type="checkbox"
           checked={isCompleted}
-          onChange={() => {
-            setIsCompleted(!isCompleted);
-          }}
+          onChange={handleCheckChange}
           />
         { body }
       </label>

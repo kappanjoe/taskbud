@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
-import uuid from 'uuid';
-import { Task, TaskList, TaskListContext } from "../types/common";
+import * as uuid from 'uuid';
+import { Task, TaskList } from '../types/classes';
+import { TaskListContext } from "../types/contexts";
 
 const UserListContext = createContext<TaskListContext>({
 	taskList: new TaskList(),
