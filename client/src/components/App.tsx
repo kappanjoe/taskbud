@@ -5,8 +5,8 @@ import { AuthContextProvider } from '../contexts/Auth';
 import { UserListContextProvider } from '../contexts/UserList';
 import { socket } from '../socket';
 
-import LogIn from './LogIn';
-import NewTask from './NewTask';
+import LogIn from '../pages/LogIn';
+import NewTask from '../pages/NewTask';
 import SignUp from '../pages/SignUp';
 import Home from '../pages/Home';
 

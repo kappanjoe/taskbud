@@ -34,6 +34,7 @@ function NewTask() {
 
 	return (
 		<div>
+			<button onClick={() => navigate('/')}>Go Back</button>
 			<form onSubmit={handleSubmit}>
 				<h1>Add a new task:</h1>
 				<label>
