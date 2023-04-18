@@ -3,7 +3,7 @@ import { Session, User } from "@supabase/supabase-js";
 import { supabaseClient } from "../supabase";
 import { SupabaseContext } from "../types/supabase";
 
-export const AuthContext = createContext<SupabaseContext>({
+const AuthContext = createContext<SupabaseContext>({
 	auth: supabaseClient.auth,
 	user: null
 });
@@ -17,7 +17,10 @@ export const AuthContextProvider = ({ children }: Props) => {
 	const [session, setSession] = useState<Session | null>(null);
 
 	useEffect(() => {
-		supabaseClient.auth.getSession().then((response) => setSession(response.data.session)).catch(err => alert(err));
+		supabaseClient.auth
+			.getSession()
+			.then((response) => setSession(response.data.session))
+			.catch(err => alert(err));
 
 		setUser(session?.user ?? null);
 

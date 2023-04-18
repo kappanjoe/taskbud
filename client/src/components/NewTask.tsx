@@ -1,13 +1,13 @@
-import React, { SetStateAction, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import { useTaskList } from '../contexts/UserList';
 import { socket } from '../socket';
-import { TaskList } from '../types/common';
 
-function NewTask(props: { taskList: TaskList, setTaskList: React.Dispatch<React.SetStateAction<TaskList>> }) {
-	const { taskList, setTaskList } = props;
-  const navigate = useNavigate();
+function NewTask() {
+	
+	const navigate = useNavigate();
 
 	const [body, setBody] = useState('');
 	const [memo, setMemo] = useState('');
@@ -15,18 +15,18 @@ function NewTask(props: { taskList: TaskList, setTaskList: React.Dispatch<React.
   const [due, setDue] = useState('');
 
 	const { auth } = useAuth();
+	const { addTask } = useTaskList();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		setTaskList({
-      tasks: [...taskList.tasks, {
-        body: body,
-        completed: false,
-        memo: memo,
-        start: start,
-        due: due
-      }]
+		addTask({
+      uuid: "", // generate new UUID
+			body: body,
+			completed: false,
+			memo: memo,
+			start: start,
+			due: due
     });
     navigate('/');
 	};
