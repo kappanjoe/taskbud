@@ -4,35 +4,10 @@ import { useAuth } from '../contexts/Auth';
 import { TaskList } from '../types/common';
 import TaskListView from '../components/TaskListView';
 
-function Home() {
+function Home(props: { taskList: TaskList }) {
+	const { taskList } = props;
 	const { auth, user } = useAuth();
 	const navigate = useNavigate();
-
-	const taskList: TaskList = {
-		tasks: [
-			{
-				body: "Task One",
-				completed: true,
-				memo: "",
-				start: new Date('April 17, 2023'),
-				due: new Date('April 24, 2023')
-			},
-			{
-				body: "Task Two",
-				completed: false,
-				memo: "",
-				start: undefined,
-				due: new Date('April 24, 2023')
-			},
-			{
-				body: "Task Three",
-				completed: false,
-				memo: "Here's a memo!",
-				start: undefined,
-				due: undefined
-			},
-		]
-	};
 
 	const handleLogout = async () => {
 		try {

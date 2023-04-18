@@ -2,8 +2,8 @@ export interface Task {
   body: string;
   completed: boolean;
   memo: string;
-  start?: Date;
-  due?: Date;
+  start: string;
+  due: string;
 };
 
 export interface TaskList {

@@ -19,21 +19,21 @@ function TaskView(props: { task: Task}) {
         { body }
       </label>
         {
-          (memo !== "") &&
+          memo !== "" &&
             <p className="task-memo">
               { "Memo: " + memo }
             </p>
         }
         {
-          start && 
+          start !== "" && 
             <p className="task-start">
-              { "Start: " + start.toDateString() }
+              { "Start: " + start }
             </p>
         }
         {
-          due &&
+          due !== "" &&
             <p className="task-due">
-              { "Due: " + due.toDateString() }
+              { "Due: " + due }
             </p>
         }
     </div>
