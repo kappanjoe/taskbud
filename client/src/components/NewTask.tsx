@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useTaskList } from '../contexts/UserList';
 import { socket } from '../socket';
+import uuid from 'uuid';
 
 function NewTask() {
 	
@@ -21,7 +22,7 @@ function NewTask() {
 		e.preventDefault();
 
 		addTask({
-      uuid: "", // generate new UUID
+      uuid: 'task-' + uuid.v4(),
 			body: body,
 			completed: false,
 			memo: memo,
