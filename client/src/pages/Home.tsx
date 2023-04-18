@@ -12,15 +12,24 @@ function Home() {
 		tasks: [
 			{
 				body: "Task One",
-				completed: true
+				completed: true,
+				memo: "",
+				start: new Date('April 17, 2023'),
+				due: new Date('April 24, 2023')
 			},
 			{
 				body: "Task Two",
-				completed: false
+				completed: false,
+				memo: "",
+				start: undefined,
+				due: new Date('April 24, 2023')
 			},
 			{
 				body: "Task Three",
-				completed: false
+				completed: false,
+				memo: "Here's a memo!",
+				start: undefined,
+				due: undefined
 			},
 		]
 	};
@@ -37,9 +46,13 @@ function Home() {
 	return (
 		<div>
 			<h1>HOME PAGE</h1>
-			<p>Current user: {user && user.email}</p>
-			<button onClick={handleLogout}>Log Out</button>
-			<TaskListView tasks={taskList.tasks} />
+			{ user && <p>Current user: {user.email}</p> }
+			{
+				user
+					? <button onClick={handleLogout}>Log Out</button>
+					: <button onClick={() => navigate('/login')}>Log In</button>
+			}
+			<TaskListView taskList={ taskList } />
 		</div>
 	)
 };

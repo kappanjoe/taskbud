@@ -1,13 +1,15 @@
 import React from 'react';
 import TaskView from './TaskView';
-import { TaskList } from '../types/common';
+import { TaskList, Task } from '../types/common';
 
-function TaskListView({ tasks }: TaskList) {
+function TaskListView(props: { taskList: TaskList }) {
+  const { taskList } = props;
+  
   return (
     <div>
       {
-        tasks.map(task => {
-          return <TaskView body={task.body} completed={task.completed}/>
+        taskList.tasks.map((task: Task) => {
+          return <TaskView task={ task } />
         })
       }
     </div>

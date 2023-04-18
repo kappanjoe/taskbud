@@ -1,22 +1,41 @@
 import React, { useState } from 'react';
 import { Task } from '../types/common';
 
-function TaskView({ body, completed }: Task) {
+function TaskView(props: { task: Task}) {
+  const { body, completed, memo, start, due } = props.task;
   const [isCompleted, setIsCompleted] = useState(completed);
   
   return (
     <div className="task">
       <label className="task-label">
         <input
-          type="checkbox"
           className="task-checkbox"
+          type="checkbox"
           checked={isCompleted}
-          onClick={() => {
+          onChange={() => {
             setIsCompleted(!isCompleted);
           }}
-        />
+          />
         { body }
       </label>
+        {
+          (memo !== "") &&
+            <p className="task-memo">
+              { "Memo: " + memo }
+            </p>
+        }
+        {
+          start && 
+            <p className="task-start">
+              { "Start: " + start.toDateString() }
+            </p>
+        }
+        {
+          due &&
+            <p className="task-due">
+              { "Due: " + due.toDateString() }
+            </p>
+        }
     </div>
   )
 };
