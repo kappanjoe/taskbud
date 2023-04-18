@@ -5,7 +5,7 @@ import { AuthContextProvider } from '../contexts/Auth';
 import { socket } from '../socket';
 
 import LogIn from './LogIn';
-import SignUp from './SignUp';
+import SignUp from '../pages/SignUp';
 // import PrivateRoute from './PrivateRoute';
 import Home from '../pages/Home';
 
