@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { Task } from '../types/common';
+import { Task, TaskList } from '../types/common';
 
-function TaskView(props: { task: Task}) {
+function TaskView(props: { task: Task }) {
   const { body, completed, memo, start, due } = props.task;
+
   const [isCompleted, setIsCompleted] = useState(completed);
   
   return (

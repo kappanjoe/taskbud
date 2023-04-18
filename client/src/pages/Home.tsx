@@ -1,12 +1,12 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
-import { TaskList } from '../types/common';
+import { useTaskList } from '../contexts/UserList';
 import TaskListView from '../components/TaskListView';
 
-function Home(props: { taskList: TaskList }) {
-	const { taskList } = props;
+function Home() {
 	const { auth, user } = useAuth();
+	const { taskList } = useTaskList();
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
