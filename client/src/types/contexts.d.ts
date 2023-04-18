@@ -1,6 +1,10 @@
 export interface SupabaseContext {
 	auth: SupabaseAuthClient;
-	user: User | null
+	user: User | null;
+};
+
+export interface SocketIOContext {
+	isConnected: boolean;
 };
 
 export interface TaskListContext {
