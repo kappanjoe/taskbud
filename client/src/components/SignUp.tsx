@@ -21,7 +21,7 @@ function SignUp() {
 			console.error(error);
 		} else {
 			socket.emit('newUser', { uid: data.user.id });
-			navigate('/home');
+			navigate('/');
 		}
 	};
 
@@ -57,7 +57,7 @@ function SignUp() {
 				<button type="submit">Sign Up</button>
 			</form>
 			<p>
-				Already have an account? <Link to="/">Click here to log in.</Link>
+				Already have an account? <Link to="/login">Click here to log in.</Link>
 			</p>
 		</div>
 	);

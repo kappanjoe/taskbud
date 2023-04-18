@@ -38,9 +38,9 @@ function App() {
     <div className="App">
       <AuthContextProvider>
         <Routes>
-          <Route path="/home" element={ <Home/> } />
+          <Route path="/" element={ <Home/> } />
           <Route path="/signup" element={ <SignUp/> } />
-          <Route path="/" element={ <LogIn/> } />
+          <Route path="/login" element={ <LogIn/> } />
         </Routes>
       </AuthContextProvider>
     </div>
