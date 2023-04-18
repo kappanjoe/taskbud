@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useTaskList } from '../contexts/UserList';
 import { socket } from '../socket';
-import uuid from 'uuid';
+import * as uuid from 'uuid';
 
 function NewTask() {
 	

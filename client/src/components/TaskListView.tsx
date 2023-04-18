@@ -1,6 +1,6 @@
 import React from 'react';
 import TaskView from './TaskView';
-import { TaskList, Task } from '../types/common';
+import { Task, TaskList } from '../types/classes';
 
 function TaskListView(props: { taskList: TaskList }) {
   const { taskList } = props;
