@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from "react";
-
+import uuid from 'uuid';
 import { Task, TaskList, TaskListContext } from "../types/common";
 
 const UserListContext = createContext<TaskListContext>({
@@ -15,10 +15,10 @@ type Props = {
 
 export const UserListContextProvider = ({ children }: Props) => {
 	const [taskList, setTaskList] = useState<TaskList>({
-		uuid: "",
+		uuid: 'list-' + uuid.v4(),
 		list: [
 			{
-				uuid: "",
+				uuid: 'task-' + uuid.v4(),
 				body: "Task One",
 				completed: true,
 				memo: "",
@@ -26,7 +26,7 @@ export const UserListContextProvider = ({ children }: Props) => {
 				due: new Date('April 24, 2023').toDateString()
 			},
 			{
-				uuid: "",
+				uuid: 'task-' + uuid.v4(),
 				body: "Task Two",
 				completed: false,
 				memo: "",
@@ -34,7 +34,7 @@ export const UserListContextProvider = ({ children }: Props) => {
 				due: new Date('April 24, 2023').toDateString()
 			},
 			{
-				uuid: "",
+				uuid: 'task-' + uuid.v4(),
 				body: "Task Three",
 				completed: false,
 				memo: "Here's a memo!",
