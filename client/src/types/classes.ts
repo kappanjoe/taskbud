@@ -1,27 +1,29 @@
 export class Task {
-  uuid: string;
+  _id: string;
   body: string;
   completed: boolean;
   memo: string;
-  start: string;
-  due: string;
+  start: Date | undefined;
+  due: Date | undefined;
 
   constructor() {
-    this.uuid = "";
+    this._id = "";
     this.body = "";
     this.completed = false;
     this.memo = "";
-    this.start = "";
-    this.due = "";
+    this.start = undefined;
+    this.due = undefined;
   }
 };
 
 export class TaskList {
-  uuid: string;
-  list: Task[];
+  _id: string;
+  tasks: Task[];
+  owner_id?: string;
 
-  constructor() {
-    this.uuid = "";
-    this.list = [];
+  constructor(owner?: string) {
+    this._id = "";
+    this.tasks = [];
+    this.owner_id = owner;
   };
 };

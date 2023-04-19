@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 import { AuthContextProvider } from '../contexts/Auth';
-import { UserListContextProvider } from '../contexts/UserList';
+import { LocalListContextProvider } from '../contexts/LocalList';
 import { SocketContextProvider } from '../contexts/Socket';
 
 import LogIn from '../pages/LogIn';
@@ -17,14 +17,14 @@ function App() {
     <div className="App">
       <SocketContextProvider>
         <AuthContextProvider>
-          <UserListContextProvider>
+          <LocalListContextProvider>
             <Routes>
               <Route path="/" element={ <Home/> } />
               <Route path="/signup" element={ <SignUp/> } />
               <Route path="/login" element={ <LogIn/> } />
               <Route path="/add-task" element={ <NewTask/> } />
             </Routes>
-          </UserListContextProvider>
+          </LocalListContextProvider>
         </AuthContextProvider>
       </SocketContextProvider>
     </div>

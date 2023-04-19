@@ -20,7 +20,7 @@ function SignUp() {
 		if (error) {
 			console.error(error);
 		} else {
-			socket.emit('newUser', { uid: data.user.id });
+			socket.emit('newUser', { _id: data.user.id });
 			navigate('/');
 		}
 	};

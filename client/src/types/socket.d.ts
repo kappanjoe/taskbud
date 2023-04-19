@@ -6,5 +6,6 @@ export interface ServerToClientEvents {
 
 export interface ClientToServerEvents {
 	hello: () => void;
-	newUser: ({ uid: string }) => void;
+	newUser: ({ _id: string }) => void;
+	getList: ({ uid: string }, cb: (taskList: TaskList) => void) => void;
 }

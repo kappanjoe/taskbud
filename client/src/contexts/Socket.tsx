@@ -38,6 +38,6 @@ export const SocketContextProvider = ({ children }: Props) => {
 	</SocketContext.Provider>
 };
 
-export const useAuth = () => {
+export const useSocket = () => {
 	return useContext(SocketContext);
 };
