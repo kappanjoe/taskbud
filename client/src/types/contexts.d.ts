@@ -1,6 +1,7 @@
 export interface SupabaseContext {
 	auth: SupabaseAuthClient;
 	user: User | null;
+  initTaskList: TaskList;
 };
 
 export interface SocketIOContext {
@@ -9,7 +10,7 @@ export interface SocketIOContext {
 
 export interface TaskListContext {
   taskList: TaskList;
-  addTask: (newTask: Task) => void;
-  updateTask: (updatedTask: Task) => void;
-  deleteTask: (taskUuid: string) => void;
+  addTaskLocal: (newTask: Task) => void;
+  updateTaskLocal: (updatedTask: Task) => void;
+  deleteTaskLocal: (taskUuid: string) => void;
 };

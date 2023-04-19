@@ -8,8 +8,8 @@ function TaskListView(props: { taskList: TaskList }) {
   return (
     <div>
       {
-        taskList.list.map((task: Task) => {
-          return <TaskView task={ task } key={task.uuid} />
+        taskList.tasks.map((task: Task) => {
+          return <TaskView task={ task } key={task._id} />
         })
       }
     </div>

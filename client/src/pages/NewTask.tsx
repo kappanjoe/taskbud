@@ -2,35 +2,47 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
-import { useTaskList } from '../contexts/UserList';
-import { socket } from '../socket';
+import { useLocalList } from '../contexts/LocalList';
+import { Task } from '../types/classes';
+import { addTaskRemote } from '../utils/controllers';
 import * as uuid from 'uuid';
+import { socket } from '../socket';
 
 function NewTask() {
 	
 	const navigate = useNavigate();
 
-	const [body, setBody] = useState('');
-	const [memo, setMemo] = useState('');
-  const [start, setStart] = useState('');
-  const [due, setDue] = useState('');
+	const [body, setBody] = useState<string>('');
+	const [memo, setMemo] = useState<string>('');
+  const [start, setStart] = useState<Date | undefined>(undefined);
+  const [due, setDue] = useState<Date | undefined>(undefined);
 
-	const { auth } = useAuth();
-	const { addTask } = useTaskList();
+	const { user } = useAuth();
+	const { addTaskLocal } = useLocalList();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		addTask({
-      uuid: 'task-' + uuid.v4(),
+		const newTask: Task = {
+      _id: 'task-' + uuid.v4(),
 			body: body,
 			completed: false,
 			memo: memo,
 			start: start,
 			due: due
-    });
+    };
+
+		addTaskLocal(newTask);
+		if (user) { addTaskRemote(socket, user.id, newTask); }
+
     navigate('/');
 	};
+	const startMonthISO = start ? (start.getMonth() < 10 ? "0" + start.getMonth() : start.getMonth()) : "";
+	const startDateISO = start ? (start.getDate() < 10 ? "0" + start.getDate() : start.getDate()) : "";
+	const startISO = start ? start.getFullYear() + "-" + startMonthISO + "-" + startDateISO : '';
+	const dueMonthISO = due ? (due.getMonth() < 10 ? "0" + due.getMonth() : due.getMonth()) : "";
+	const dueDateISO = due ? (due.getDate() < 10 ? "0" + due.getDate() : due.getDate()) : "";
+	const dueISO = due ? due.getFullYear() + "-" + dueMonthISO + "-" + dueDateISO : '';
 
 	return (
 		<div>
@@ -63,14 +75,14 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-        <label>
+        <label> 
 					Start date:
 					<input
 						id="newtask-start"
 						type="date"
-						value={start}
+						value={startISO}
 						onChange={(e) => {
-							setStart(e.target.value)
+							setStart(e.target.valueAsDate || undefined)
 						}}
 					/>
 				</label>
@@ -80,9 +92,9 @@ function NewTask() {
 					<input
 						id="newtask-due"
 						type="date"
-						value={due}
+						value={dueISO}
 						onChange={(e) => {
-							setDue(e.target.value)
+							setDue(e.target.valueAsDate || undefined)
 						}}
 					/>
 				</label>

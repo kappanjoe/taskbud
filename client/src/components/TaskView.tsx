@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Task } from '../types/classes';
-import { useTaskList } from '../contexts/UserList';
+import { useLocalList } from '../contexts/LocalList';
 
 function TaskView(props: { task: Task }) {
   const { body, completed, memo, start, due } = props.task;
-  const { updateTask } = useTaskList();
+  const { updateTaskLocal } = useLocalList();
 
   const [isCompleted, setIsCompleted] = useState(completed);
 
@@ -16,7 +16,7 @@ function TaskView(props: { task: Task }) {
 
     let newTask = props.task;
     newTask.completed = newCompleted;
-    updateTask(newTask);
+    updateTaskLocal(newTask);
   };
   
   return (
@@ -37,15 +37,15 @@ function TaskView(props: { task: Task }) {
             </p>
         }
         {
-          start !== "" && 
+          start && 
             <p className="task-start">
-              { "Start: " + start }
+              { "Start: " + start.toLocaleDateString() }
             </p>
         }
         {
-          due !== "" &&
+          due &&
             <p className="task-due">
-              { "Due: " + due }
+              { "Due: " + due.toLocaleDateString() }
             </p>
         }
     </div>
