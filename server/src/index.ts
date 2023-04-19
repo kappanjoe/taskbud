@@ -24,8 +24,8 @@ io.on('connection', (socket) => {
 
 			console.log('This many users: ', response);
 			socket.emit('world');
-		} catch {
-			console.dir;
+		} catch (err) {
+			console.dir(err);
 		} finally {
 			await client.close();
 		}
@@ -41,11 +41,49 @@ io.on('connection', (socket) => {
 
 			console.log('New user: ', response);
 			socket.emit('userAdded', response);
-		} catch {
-			console.dir;
+		} catch (err) {
+			console.dir(err);
 		} finally {
 			await client.close();
 		}
 	});
+
+	socket.on('getList', async (userId: string, cb: (taskList: any) => void) => {
+		try {
+			await client.connect();
+			const response = await client
+				.db(process.env.MONGO_DB_NAME)
+				.collection('task-lists')
+				.findOne({ owner_id: userId });
+
+			console.log('Found list: ', response);
+			if (response?.value.tasks) { cb(response.value.tasks) };
+		} catch (err) {
+			console.dir(err);
+		} finally {
+			await client.close();
+		}
+	});
+
+	socket.on('upsertTask', async (userId: string, task: { _id: string }, cb: (taskList: any) => void) => {
+		try {
+			await client.connect();
+			const response = await client
+				.db(process.env.MONGO_DB_NAME)
+				.collection('task-lists')	
+				.findOneAndUpdate(
+						{ owner_id: userId },
+						{ $set: { "tasks.$[task]": task } },
+						{ arrayFilters: [ { task: { _id: task._id } } ], upsert: true, returnDocument: "after" }
+					);
+			
+			console.log("Task upserted: ", response);
+			if (response?.value) { cb(response.value) };
+		} catch (err) {
+			console.dir(err);
+		} finally {
+			await client.close();
+		}
+	})
 
 });
