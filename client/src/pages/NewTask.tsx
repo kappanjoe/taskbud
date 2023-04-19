@@ -37,9 +37,11 @@ function NewTask() {
 
     navigate('/');
 	};
+
 	const startMonthISO = start ? (start.getMonth() < 10 ? "0" + start.getMonth() : start.getMonth()) : "";
 	const startDateISO = start ? (start.getDate() < 10 ? "0" + start.getDate() : start.getDate()) : "";
 	const startISO = start ? start.getFullYear() + "-" + startMonthISO + "-" + startDateISO : '';
+	
 	const dueMonthISO = due ? (due.getMonth() < 10 ? "0" + due.getMonth() : due.getMonth()) : "";
 	const dueDateISO = due ? (due.getDate() < 10 ? "0" + due.getDate() : due.getDate()) : "";
 	const dueISO = due ? due.getFullYear() + "-" + dueMonthISO + "-" + dueDateISO : '';

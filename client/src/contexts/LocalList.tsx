@@ -1,7 +1,11 @@
-import React, { createContext, useContext, useState, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode, useEffect } from "react";
 import { Task, TaskList } from '../types/classes';
 import { TaskListContext } from "../types/contexts";
 import { useAuth } from "./Auth";
+import { useSocket } from "./Socket";
+import { socket } from "../socket";
+import { loadTaskList } from "../utils/controllers";
+import * as uuid from 'uuid';
 
 const LocalListContext = createContext<TaskListContext>({
 	taskList: new TaskList(),
@@ -15,10 +19,16 @@ type Props = {
 };
 
 export const LocalListContextProvider = ({ children }: Props) => {
-	const { initTaskList } = useAuth();
-	
-	const [taskList, setTaskList] = useState<TaskList>(initTaskList);
+	const [taskList, setTaskList] = useState<TaskList>(new TaskList());
+	const { user } = useAuth();
+	const { isConnected } = useSocket();
 
+	useEffect(() => {
+		if (user && isConnected) {
+			loadTaskList(socket, user.id, setTaskList);
+		}
+	// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, [user]);
 
 	const addTaskLocal = (newTask: Task) => {
 		let newList = new TaskList();
