@@ -2,16 +2,10 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { Session, User } from "@supabase/supabase-js";
 import { supabaseClient } from "../supabase";
 import { SupabaseContext } from "../types/contexts";
-import { TaskList } from "../types/classes";
-import { useSocket } from "./Socket";
-import { socket } from "../socket";
-import * as uuid from 'uuid';
-import { loadTaskList } from "../utils/controllers";
 
 const AuthContext = createContext<SupabaseContext>({
 	auth: supabaseClient.auth,
-	user: null,
-	initTaskList: new TaskList()
+	user: null
 });
 
 type Props = {
@@ -21,12 +15,6 @@ type Props = {
 export const AuthContextProvider = ({ children }: Props) => {
 	const [user, setUser] = useState<User | null>(null);
 	const [session, setSession] = useState<Session | null>(null);
-	const [initTaskList, setInitTaskList] = useState<TaskList>({
-		_id: 'list-' + uuid.v4(),
-		tasks: []
-	});
-
-	const { isConnected } = useSocket();
 
 	useEffect(() => {
 		supabaseClient.auth
@@ -38,18 +26,15 @@ export const AuthContextProvider = ({ children }: Props) => {
 
 		const { data: listener } = supabaseClient.auth.onAuthStateChange(async (event, session) => {
 			setUser(session?.user ?? null);
-			if (session?.user && isConnected) {
-				loadTaskList(socket, session.user.id, setInitTaskList);
-			}
 		});
 
 		return () => {
 			listener?.subscription.unsubscribe();
 		};
-		// eslint-disable-next-line react-hooks/exhaustive-deps
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	return <AuthContext.Provider value={{ auth: supabaseClient.auth, user, initTaskList }} >
+	return <AuthContext.Provider value={{ auth: supabaseClient.auth, user }} >
 		{ children }
 	</AuthContext.Provider>
 };

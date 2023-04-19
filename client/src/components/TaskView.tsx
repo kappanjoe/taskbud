@@ -39,13 +39,13 @@ function TaskView(props: { task: Task }) {
         {
           start && 
             <p className="task-start">
-              { "Start: " + start.toLocaleDateString() }
+              { "Start: " + new Date(start).toLocaleDateString() }
             </p>
         }
         {
           due &&
             <p className="task-due">
-              { "Due: " + due.toLocaleDateString() }
+              { "Due: " + new Date(due).toLocaleDateString() }
             </p>
         }
     </div>

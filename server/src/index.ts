@@ -59,7 +59,7 @@ io.on('connection', (socket) => {
 				.findOne({ owner_id: userId });
 
 			console.log('Found list: ', response);
-			if (response?.value.tasks) { cb(response.value.tasks) };
+			if (response) { cb(response) };
 		} catch (err) {
 			console.dir(err);
 		} finally {

@@ -33,6 +33,7 @@ function LogIn() {
 						id="login-email"
 						type="email"
 						placeholder='someone@somewhere.net'
+						autoComplete="current-password"
 						value={email}
 						onChange={(e) => {
 							setEmail(e.target.value)
