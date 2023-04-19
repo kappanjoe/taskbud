@@ -17,7 +17,7 @@ export const loadTaskList = (socket: Socket, userId: string, setTaskList: (value
 
 export const addTaskRemote = (socket: Socket, userId: string, task: Task) => {
   try {
-    socket.emit('upsertTask', userId, task, (taskList: TaskList) => {
+    socket.emit('addTask', userId, task, (taskList: TaskList) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
