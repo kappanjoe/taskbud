@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@heroicons/react": "^2.0.17",
     "@supabase/auth-ui-react": "^0.3.5",
     "@supabase/supabase-js": "^2.20.0",
     "@testing-library/jest-dom": "^5.16.5",

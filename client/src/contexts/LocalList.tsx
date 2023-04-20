@@ -12,7 +12,9 @@ const LocalListContext = createContext<TaskListContext>({
 	updateTaskLocal: () => {},
 	deleteTaskLocal: () => {},
 	selectedTask: new Task(),
-	setSelectedTask: undefined
+	setSelectedTask: undefined,
+	listProgress: 0.0,
+	updateProgressLocal: () => {}
 });
 
 type Props = {
@@ -22,6 +24,7 @@ type Props = {
 export const LocalListContextProvider = ({ children }: Props) => {
 	const [taskList, setTaskList] = useState<TaskList>(new TaskList());
 	const [selectedTask, setSelectedTask] = useState<Task>(new Task());
+	const [listProgress, setListProgress] = useState<number>(0.0);
 	const { user } = useAuth();
 	const { isConnected } = useSocket();
 
@@ -29,8 +32,13 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		if (user && isConnected) {
 			loadTaskList(socket, user.id, setTaskList);
 		}
+		updateProgressLocal();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
+
+	useEffect(() => {
+		updateProgressLocal();
+	}, [taskList]);
 
 	const addTaskLocal = (newTask: Task) => {
 		let newList: TaskList = Object.assign(new TaskList(), taskList);
@@ -56,9 +64,8 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	};
 
 	const deleteTaskLocal = (taskId: string) => {
-		let newList = new TaskList();
-		
-		newList._id = taskList._id;
+		let newList = Object.assign(new TaskList(), taskList);
+
 		newList.tasks = taskList.tasks.filter(task => {
 			return task._id !== taskId;
 		});
@@ -67,7 +74,19 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
-	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask} } >
+	const updateProgressLocal = () => {
+		let allTasksCt = 0;
+		let completedCt = 0;
+
+		taskList.tasks.forEach( task => {
+			allTasksCt++;
+			if (task.completed) { completedCt++; }
+		});
+
+		setListProgress(completedCt / allTasksCt);
+	};
+
+	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask, listProgress, updateProgressLocal} } >
 		{ children }
 	</LocalListContext.Provider>
 };

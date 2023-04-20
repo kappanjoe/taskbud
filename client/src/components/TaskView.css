@@ -1,0 +1,35 @@
+.task-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 5pt 50pt;
+}
+
+.task-label {
+  display: flex;
+  justify-content: flex-start;
+}
+.task-checkbox {
+  margin: 1pt 5pt 5pt -15pt;
+  color: antiquewhite;
+}
+
+.task-button-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  padding: 5pt;
+}
+
+.detail {
+  display: flex;
+  align-content: center;
+  margin-bottom: 2pt;
+}
+
+.icon {
+  width: 10pt;
+  color: tan;
+  margin-right: 3pt;
+}

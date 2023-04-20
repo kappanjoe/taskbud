@@ -1,0 +1,11 @@
+.home-header {
+  padding: 5pt;
+  font-style: italic;
+}
+
+.home-header-user-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-bottom: 5pt;
+}
