@@ -3,16 +3,16 @@ export class Task {
   body: string;
   completed: boolean;
   memo: string;
-  start: Date | undefined;
-  due: Date | undefined;
+  start: string;
+  due: string;
 
   constructor() {
     this._id = "";
     this.body = "";
     this.completed = false;
     this.memo = "";
-    this.start = undefined;
-    this.due = undefined;
+    this.start = "";
+    this.due = "";
   }
 };
 
