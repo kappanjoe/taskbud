@@ -14,7 +14,8 @@ const LocalListContext = createContext<TaskListContext>({
 	selectedTask: new Task(),
 	setSelectedTask: undefined,
 	listProgress: 0.0,
-	updateProgressLocal: () => {}
+	updateProgressLocal: () => {},
+	clearTaskListLocal: () => {}
 });
 
 type Props = {
@@ -93,7 +94,12 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		setListProgress(completedCt / allTasksCt);
 	};
 
-	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask, listProgress, updateProgressLocal} } >
+	const clearTaskListLocal = () => {
+		localStorage.removeItem('localList');
+		setTaskList(new TaskList());
+	};
+
+	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask, listProgress, updateProgressLocal, clearTaskListLocal} } >
 		{ children }
 	</LocalListContext.Provider>
 };

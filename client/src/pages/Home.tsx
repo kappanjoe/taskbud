@@ -8,12 +8,13 @@ import './Home.css';
 
 function Home() {
 	const { auth, user } = useAuth();
-	const { taskList } = useLocalList();
+	const { taskList, clearTaskListLocal } = useLocalList();
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
 		try {
 			auth.signOut();
+			clearTaskListLocal();
 			navigate('/');
 		} catch (err) {
 			console.error(err);
