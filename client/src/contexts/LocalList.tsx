@@ -33,9 +33,8 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	}, [user]);
 
 	const addTaskLocal = (newTask: Task) => {
-		let newList = new TaskList();
-		
-		newList._id = taskList._id;
+		let newList: TaskList = Object.assign(new TaskList(), taskList);
+
 		newList.tasks = [ ...taskList.tasks, newTask ];
 
 		setTaskList(newList);
@@ -56,12 +55,12 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
-	const deleteTaskLocal = (taskUuid: string) => {
+	const deleteTaskLocal = (taskId: string) => {
 		let newList = new TaskList();
 		
 		newList._id = taskList._id;
 		newList.tasks = taskList.tasks.filter(task => {
-			return task._id === taskUuid;
+			return task._id !== taskId;
 		});
 
 		setTaskList(newList);
