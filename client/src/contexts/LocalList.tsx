@@ -29,10 +29,16 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const { isConnected } = useSocket();
 
 	useEffect(() => {
+		const localList = localStorage.getItem('localList');
+		if (localList !== null) {
+			setTaskList(JSON.parse(localList));
+		}
+	}, []);
+
+	useEffect(() => {
 		if (user && isConnected) {
 			loadTaskList(socket, user.id, setTaskList);
 		}
-		updateProgressLocal();
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [user]);
 
