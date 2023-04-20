@@ -5,11 +5,12 @@ export const loadTaskList = (socket: Socket, userId: string, setTaskList: (value
   try {
     const localList = localStorage.getItem('localList');
     if (localList === null) {
+      console.warn('User task list could not be loaded from localStorage.');
       socket.emit('getList', userId, (taskList: TaskList) => {
         setTaskList(taskList);
         localStorage.setItem('localList', JSON.stringify(taskList));
+        console.log('Task list downloaded.')
       });
-      console.warn('User task list could not be loaded from localStorage.');
     } else {
       let list = JSON.parse(localList);
       setTaskList(list);

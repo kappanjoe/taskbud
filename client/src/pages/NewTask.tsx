@@ -14,8 +14,8 @@ function NewTask() {
 
 	const [body, setBody] = useState<string>('');
 	const [memo, setMemo] = useState<string>('');
-  const [start, setStart] = useState<Date | undefined>(undefined);
-  const [due, setDue] = useState<Date | undefined>(undefined);
+  const [start, setStart] = useState<string>('');
+  const [due, setDue] = useState<string>('');
 
 	const { user } = useAuth();
 	const { addTaskLocal } = useLocalList();
@@ -37,14 +37,6 @@ function NewTask() {
 
     navigate('/');
 	};
-
-	const startMonthISO = start ? (start.getMonth() < 10 ? "0" + start.getMonth() : start.getMonth()) : "";
-	const startDateISO = start ? (start.getDate() < 10 ? "0" + start.getDate() : start.getDate()) : "";
-	const startISO = start ? start.getFullYear() + "-" + startMonthISO + "-" + startDateISO : '';
-	
-	const dueMonthISO = due ? (due.getMonth() < 10 ? "0" + due.getMonth() : due.getMonth()) : "";
-	const dueDateISO = due ? (due.getDate() < 10 ? "0" + due.getDate() : due.getDate()) : "";
-	const dueISO = due ? due.getFullYear() + "-" + dueMonthISO + "-" + dueDateISO : '';
 
 	return (
 		<div>
@@ -82,9 +74,9 @@ function NewTask() {
 					<input
 						id="newtask-start"
 						type="date"
-						value={startISO}
+						value={start}
 						onChange={(e) => {
-							setStart(e.target.valueAsDate || undefined)
+							setStart(e.target.value)
 						}}
 					/>
 				</label>
@@ -94,9 +86,9 @@ function NewTask() {
 					<input
 						id="newtask-due"
 						type="date"
-						value={dueISO}
+						value={due}
 						onChange={(e) => {
-							setDue(e.target.valueAsDate || undefined)
+							setDue(e.target.value)
 						}}
 					/>
 				</label>
