@@ -40,3 +40,13 @@ export const updateTaskRemote = (socket: Socket, userId: string, task: Task) => 
     console.warn('User task list could not be updated remotely.');
   }
 };
+
+export const deleteTaskRemote = (socket: Socket, userId: string, taskId: string) => {
+  try {
+    socket.emit('deleteTask', userId, taskId, (taskList: TaskList) => {
+      console.log('User task list updated remotely.', taskList);
+    });
+  } catch {
+    console.warn('User task list could not be updated remotely.');
+  }
+};

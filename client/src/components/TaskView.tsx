@@ -58,6 +58,14 @@ function TaskView(props: { task: Task }) {
         }}>
         Edit Task
       </button>
+      <button
+        className="task-delete"
+        onClick={() => {
+          setSelectedTask(props.task);
+          navigate('/delete-task');
+        }}>
+        DELETE Task
+      </button>
     </div>
   )
 };

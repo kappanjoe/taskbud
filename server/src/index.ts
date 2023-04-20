@@ -149,4 +149,45 @@ io.on('connection', (socket) => {
 		}
 	});
 
+	socket.on('deleteTask', async (userId: string, taskId: string, cb: (taskList: any) => void) => {
+		try {
+			await client.connect();
+			const oldList = await client
+				.db(process.env.MONGO_DB_NAME)
+				.collection('task-lists')	
+				.findOne(
+						{ owner_id: userId }
+					);
+
+			let newList: Document;
+
+			if (oldList) {
+				newList = {
+					_id: oldList._id,
+					owner_id: oldList.owner_id,
+					tasks: oldList.tasks.filter( (oldTask: Document) => {
+							return oldTask._id !== taskId;
+						})
+				};
+
+				const response = await client
+					.db(process.env.MONGO_DB_NAME)
+					.collection('task-lists')
+					.findOneAndReplace(
+						{ _id: oldList._id },
+						newList,
+						{ returnDocument: "after" }
+					);
+				console.log("Task updated: ", response.value);
+				cb(response.value);
+			} else {
+				throw "Target list not found.";
+			}
+		} catch (err) {
+			console.dir(err);
+		} finally {
+			await client.close();
+		}
+	});
+
 });
