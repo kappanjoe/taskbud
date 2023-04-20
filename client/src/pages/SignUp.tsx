@@ -35,6 +35,7 @@ function SignUp() {
 						id="signup-email"
 						type="email"
 						placeholder='someone@somewhere.net'
+						autoComplete="username"
 						value={email}
 						onChange={(e) => {
 							setEmail(e.target.value)
@@ -47,6 +48,7 @@ function SignUp() {
 					<input
 						id="signup-pw"
 						type="password"
+						autoComplete="new-password"
 						value={password}
 						onChange={(e) => {
 							setPassword(e.target.value)

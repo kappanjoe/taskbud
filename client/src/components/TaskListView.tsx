@@ -1,6 +1,7 @@
 import React from 'react';
 import TaskView from './TaskView';
 import { Task, TaskList } from '../types/classes';
+import ProgressView from './ProgressView';
 
 function TaskListView(props: { taskList: TaskList }) {
   const { taskList } = props;
@@ -12,6 +13,7 @@ function TaskListView(props: { taskList: TaskList }) {
           return <TaskView task={ task } key={task._id} />
         })
       }
+      <ProgressView/>
     </div>
   );
 };

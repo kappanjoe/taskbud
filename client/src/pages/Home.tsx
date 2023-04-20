@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
 import TaskListView from '../components/TaskListView';
 
+import './Home.css';
+
 function Home() {
 	const { auth, user } = useAuth();
 	const { taskList } = useLocalList();
@@ -19,16 +21,18 @@ function Home() {
 	};
 
 	return (
-		<div>
-			<h1>HOME PAGE</h1>
-			{ user && <p>Current user: {user.email}</p> }
-			{
-				user
-					? <button onClick={handleLogout}>Log Out</button>
-					: <button onClick={() => navigate('/login')}>Log In</button>
-			}
+		<div className="home-container">
+			<h1 className="home-header">task bud</h1>
+			<div className="home-header-user-container">
+				{ user && <p className="home-username">Current user: {user.email}</p> }
+				{
+					user
+						? <button className="button-primary" onClick={handleLogout}>Log Out</button>
+						: <button className="button-primary" onClick={() => navigate('/login')}>Log In</button>
+				}
+			</div>
 			<TaskListView taskList={ taskList } />
-			<button onClick={() => navigate('/add-task')}>Add Task</button>
+			<button className="home-add-task" onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)
 };
