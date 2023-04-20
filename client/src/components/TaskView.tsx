@@ -7,12 +7,12 @@ import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 
 import './TaskView.css';
-import { DocumentTextIcon, CalendarIcon, FlagIcon } from '@heroicons/react/20/solid';
+import { DocumentTextIcon, CalendarIcon, FlagIcon, TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
 
 
 function TaskView(props: { task: Task }) {
   const { body, completed, memo, start, due } = props.task;
-  const { updateTaskLocal, setSelectedTask, updateProgressLocal } = useLocalList();
+  const { updateTaskLocal, setSelectedTask } = useLocalList();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -69,7 +69,7 @@ function TaskView(props: { task: Task }) {
             setSelectedTask(props.task);
             navigate('/edit-task');
           }}>
-          Edit Task
+          <PencilSquareIcon className="icon-button"/>
         </button>
         <button
           className="button-destructive"
@@ -77,7 +77,7 @@ function TaskView(props: { task: Task }) {
             setSelectedTask(props.task);
             navigate('/delete-task');
           }}>
-          DELETE
+          <TrashIcon className="delete icon-button-destructive"/>
         </button>
       </div>
     </div>
