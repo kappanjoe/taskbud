@@ -1,10 +1,12 @@
 import React from 'react';
-import TaskView from './TaskView';
-import { Task, TaskList } from '../types/classes';
 import ProgressView from './ProgressView';
+import TaskView from './TaskView';
+import { useAuth } from '../contexts/Auth';
+import { Task, TaskList } from '../types/classes';
 
 function TaskListView(props: { taskList: TaskList }) {
   const { taskList } = props;
+  const { user } = useAuth();
   
   return (
     <div>
@@ -13,7 +15,7 @@ function TaskListView(props: { taskList: TaskList }) {
           return <TaskView task={ task } key={task._id} />
         })
       }
-      <ProgressView/>
+      { user && <ProgressView/> }
     </div>
   );
 };

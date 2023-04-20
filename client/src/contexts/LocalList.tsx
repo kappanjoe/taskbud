@@ -38,6 +38,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		updateProgressLocal();
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [taskList]);
 
 	const addTaskLocal = (newTask: Task) => {

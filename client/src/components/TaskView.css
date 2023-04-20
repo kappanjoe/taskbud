@@ -33,3 +33,15 @@
   color: tan;
   margin-right: 3pt;
 }
+
+.icon-button {
+  width: 10pt;
+  color: peru;
+  margin: 3pt;
+}
+
+.icon-button-destructive {
+  width: 10pt;
+  color: salmon;
+  margin: 3pt;
+}
