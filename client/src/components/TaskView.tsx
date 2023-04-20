@@ -32,36 +32,38 @@ function TaskView(props: { task: Task }) {
   
   return (
     <div className="task-container">
-      <label className="task-label">
-        <input
-          className="task-checkbox"
-          type="checkbox"
-          checked={isCompleted}
-          onChange={handleCheckChange}
-          />
-        { body }
-      </label>
-      {
-        memo !== "" &&
-          <p className="task-memo detail">
-            <DocumentTextIcon className="task-memo icon"/>
-            { memo }
-          </p>
-      }
-      {
-        start && 
-          <p className="task-start detail">
-            <CalendarIcon className="task-start icon"/>
-            { new Date(start).toLocaleDateString() }
-          </p>
-      }
-      {
-        due &&
-          <p className="task-due detail">
-            <FlagIcon className="task-due icon"/>
-            { new Date(due).toLocaleDateString() }
-          </p>
-      }
+      <div className="task-content-wrapper">
+        <label className="task-label">
+          <input
+            className="task-checkbox"
+            type="checkbox"
+            checked={isCompleted}
+            onChange={handleCheckChange}
+            />
+          { body }
+        </label>
+        {
+          memo !== "" &&
+            <p className="task-memo detail">
+              <DocumentTextIcon className="task-memo icon"/>
+              { memo }
+            </p>
+        }
+        {
+          start && 
+            <p className="task-start detail">
+              <CalendarIcon className="task-start icon"/>
+              { new Date(start).toLocaleDateString() }
+            </p>
+        }
+        {
+          due &&
+            <p className="task-due detail">
+              <FlagIcon className="task-due icon"/>
+              { new Date(due).toLocaleDateString() }
+            </p>
+        }
+      </div>
       <div className="task-button-wrapper">
         <button
           className="button-primary"
@@ -69,7 +71,7 @@ function TaskView(props: { task: Task }) {
             setSelectedTask(props.task);
             navigate('/edit-task');
           }}>
-          <PencilSquareIcon className="icon-button"/>
+          <PencilSquareIcon className="button-icon"/>
         </button>
         <button
           className="button-destructive"
@@ -77,7 +79,7 @@ function TaskView(props: { task: Task }) {
             setSelectedTask(props.task);
             navigate('/delete-task');
           }}>
-          <TrashIcon className="delete icon-button-destructive"/>
+          <TrashIcon className="delete button-icon-destructive"/>
         </button>
       </div>
     </div>

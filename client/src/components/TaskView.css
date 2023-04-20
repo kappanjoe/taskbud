@@ -1,25 +1,36 @@
 .task-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: flex-start;
   margin: 5pt 50pt;
+}
+
+.task-content-wrapper {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 
 .task-label {
   display: flex;
   justify-content: flex-start;
 }
+
 .task-checkbox {
   margin: 1pt 5pt 5pt -15pt;
   color: antiquewhite;
 }
 
 .task-button-wrapper {
-  width: 100%;
+  width: max-content;
   display: flex;
   flex-direction: row;
   justify-content: space-around;
-  padding: 5pt;
+}
+
+.task-button-wrapper > button {
+  padding: 0 2pt;
+  margin: 2pt;
 }
 
 .detail {
@@ -34,13 +45,13 @@
   margin-right: 3pt;
 }
 
-.icon-button {
+.button-icon {
   width: 10pt;
   color: peru;
   margin: 3pt;
 }
 
-.icon-button-destructive {
+.button-icon-destructive {
   width: 10pt;
   color: salmon;
   margin: 3pt;

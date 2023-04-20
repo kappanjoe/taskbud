@@ -9,7 +9,7 @@ export const loadTaskList = (socket: Socket, userId: string, setTaskList: (value
       socket.emit('getList', userId, (taskList: TaskList) => {
         setTaskList(taskList);
         localStorage.setItem('localList', JSON.stringify(taskList));
-        console.log('Task list downloaded.')
+        console.log('Task list downloaded.');
       });
     } else {
       let list = JSON.parse(localList);
