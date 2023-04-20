@@ -15,7 +15,7 @@ function TaskListView(props: { taskList: TaskList }) {
           return <TaskView task={ task } key={task._id} />
         })
       }
-      { user && <ProgressView/> }
+      { (user && taskList.tasks.length > 0) && <ProgressView/> }
     </div>
   );
 };
