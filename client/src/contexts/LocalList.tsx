@@ -5,13 +5,14 @@ import { useAuth } from "./Auth";
 import { useSocket } from "./Socket";
 import { socket } from "../socket";
 import { loadTaskList } from "../utils/controllers";
-import * as uuid from 'uuid';
 
 const LocalListContext = createContext<TaskListContext>({
 	taskList: new TaskList(),
 	addTaskLocal: () => {},
 	updateTaskLocal: () => {},
-	deleteTaskLocal: () => {}
+	deleteTaskLocal: () => {},
+	selectedTask: new Task(),
+	setSelectedTask: undefined
 });
 
 type Props = {
@@ -20,6 +21,7 @@ type Props = {
 
 export const LocalListContextProvider = ({ children }: Props) => {
 	const [taskList, setTaskList] = useState<TaskList>(new TaskList());
+	const [selectedTask, setSelectedTask] = useState<Task>(new Task());
 	const { user } = useAuth();
 	const { isConnected } = useSocket();
 
@@ -66,7 +68,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
-	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal} } >
+	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask} } >
 		{ children }
 	</LocalListContext.Provider>
 };

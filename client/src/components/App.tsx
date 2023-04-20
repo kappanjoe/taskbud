@@ -11,6 +11,7 @@ import SignUp from '../pages/SignUp';
 import Home from '../pages/Home';
 
 import './App.css';
+import EditTask from '../pages/EditTask';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
               <Route path="/signup" element={ <SignUp/> } />
               <Route path="/login" element={ <LogIn/> } />
               <Route path="/add-task" element={ <NewTask/> } />
+              <Route path="/edit-task" element={ <EditTask/> } />
             </Routes>
           </LocalListContextProvider>
         </AuthContextProvider>
