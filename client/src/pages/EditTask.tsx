@@ -4,36 +4,34 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
-import { addTaskRemote } from '../utils/controllers';
-import * as uuid from 'uuid';
+import { updateTaskRemote } from '../utils/controllers';
 import { socket } from '../socket';
 
-function NewTask() {
-	
+function EditTask() {
 	const navigate = useNavigate();
 	const { user } = useAuth();
-	const { addTaskLocal } = useLocalList();
+	const { updateTaskLocal, selectedTask } = useLocalList();
 
-	const [body, setBody] = useState<string>('');
-	const [memo, setMemo] = useState<string>('');
-  const [start, setStart] = useState<string>('');
-  const [due, setDue] = useState<string>('');
+	const [body, setBody] = useState<string>(selectedTask.body);
+	const [memo, setMemo] = useState<string>(selectedTask.memo)
+  const [start, setStart] = useState<string>(selectedTask.start);
+  const [due, setDue] = useState<string>(selectedTask.due);
 
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		const newTask: Task = {
-      _id: 'task-' + uuid.v4(),
+      _id: selectedTask._id,
 			body: body,
-			completed: false,
+			completed: selectedTask.completed,
 			memo: memo,
 			start: start,
 			due: due
     };
 
-		addTaskLocal(newTask);
-		if (user) { addTaskRemote(socket, user.id, newTask); }
+		updateTaskLocal(newTask);
+		if (user) { updateTaskRemote(socket, user.id, newTask); }
 
     navigate('/');
 	};
@@ -42,7 +40,7 @@ function NewTask() {
 		<div>
 			<button onClick={() => navigate('/')}>Go Back</button>
 			<form onSubmit={handleSubmit}>
-				<h1>Add a new task:</h1>
+				<h1>Edit task:</h1>
 				<label>
 					<input
 						id="newtask-body"
@@ -93,10 +91,10 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Add Task</button>
+				<button type="submit">Save</button>
 			</form>
 		</div>
 	);
 };
 
-export default NewTask;
+export default EditTask;

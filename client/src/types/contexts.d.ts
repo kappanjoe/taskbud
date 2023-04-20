@@ -1,3 +1,5 @@
+import { Task } from "./classes";
+
 export interface SupabaseContext {
 	auth: SupabaseAuthClient;
 	user: User | null;
@@ -12,4 +14,6 @@ export interface TaskListContext {
   addTaskLocal: (newTask: Task) => void;
   updateTaskLocal: (updatedTask: Task) => void;
   deleteTaskLocal: (taskUuid: string) => void;
+  selectedTask: Task;
+  setSelectedTask: Dispatch<SetStateAction<Task>> | undefined;
 };
