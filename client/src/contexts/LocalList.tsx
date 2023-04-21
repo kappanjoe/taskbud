@@ -4,7 +4,7 @@ import { TaskListContext } from "../types/contexts";
 import { useAuth } from "./Auth";
 import { useSocket } from "./Socket";
 import { socket } from "../socket";
-import { loadTaskList } from "../utils/controllers";
+import { loadTaskList } from "../controllers";
 
 const LocalListContext = createContext<TaskListContext>({
 	taskList: new TaskList(),
@@ -38,10 +38,10 @@ export const LocalListContextProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		if (user && isConnected) {
-			loadTaskList(socket, user.id, setTaskList);
+			loadTaskList(socket, setTaskList);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [user]);
+	}, [user, isConnected]);
 
 	useEffect(() => {
 		updateProgressLocal();

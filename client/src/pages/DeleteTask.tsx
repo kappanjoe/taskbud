@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
-import { deleteTaskRemote } from '../utils/controllers';
+import { deleteTaskRemote } from '../controllers';
 import { socket } from '../socket';
 
 function DeleteTask() {
@@ -15,7 +15,7 @@ function DeleteTask() {
 		e.preventDefault();
 
 		deleteTaskLocal(selectedTask._id);
-		if (user) { deleteTaskRemote(socket, user.id, selectedTask._id); }
+		if (user) { deleteTaskRemote(socket, selectedTask._id); }
 
     navigate('/');
 	};

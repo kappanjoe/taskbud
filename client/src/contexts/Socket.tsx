@@ -11,8 +11,8 @@ type Props = {
 };
 
 export const SocketContextProvider = ({ children }: Props) => {
-	const [isConnected, setIsConnected] = useState(socket.connected);
-
+  const [isConnected, setIsConnected] = useState(socket.connected);
+  
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);

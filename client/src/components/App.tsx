@@ -17,8 +17,8 @@ import './App.css';
 function App() {
   return (
     <div className="App">
-      <SocketContextProvider>
-        <AuthContextProvider>
+      <AuthContextProvider>
+        <SocketContextProvider>
           <LocalListContextProvider>
             <Routes>
               <Route path="/" element={ <Home/> } />
@@ -29,8 +29,8 @@ function App() {
               <Route path="/delete-task" element={ <DeleteTask/> } />
             </Routes>
           </LocalListContextProvider>
-        </AuthContextProvider>
-      </SocketContextProvider>
+        </SocketContextProvider>
+      </AuthContextProvider>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
-import { addTaskRemote } from '../utils/controllers';
+import { addTaskRemote } from '../controllers';
 import * as uuid from 'uuid';
 import { socket } from '../socket';
 
@@ -33,7 +33,7 @@ function NewTask() {
     };
 
 		addTaskLocal(newTask);
-		if (user) { addTaskRemote(socket, user.id, newTask); }
+		if (user) { addTaskRemote(socket, newTask); }
 
     navigate('/');
 	};

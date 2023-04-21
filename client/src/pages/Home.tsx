@@ -1,5 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '../socket';
 import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
 import TaskListView from '../components/TaskListView';
@@ -14,6 +15,7 @@ function Home() {
 	const handleLogout = async () => {
 		try {
 			auth.signOut();
+			socket.disconnect();
 			clearTaskListLocal();
 		} catch (err) {
 			console.error(err);
