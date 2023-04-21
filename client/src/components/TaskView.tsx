@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../socket';
-import { updateTaskRemote } from '../utils/controllers';
+import { updateTaskRemote } from '../controllers';
 import { useAuth } from '../contexts/Auth';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
@@ -27,7 +27,7 @@ function TaskView(props: { task: Task }) {
     newTask.completed = newCompleted;
 
     updateTaskLocal(newTask);
-    if (user) { updateTaskRemote(socket, user.id, newTask); }
+    if (user) { updateTaskRemote(socket, newTask); }
   };
   
   return (

@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import { client } from './mongodb';
-import { error } from 'console';
-import { Condition, Document, ObjectId } from 'mongodb';
+import { Document } from 'mongodb';
+import { setupUser } from './middleware/setupUser';
 require('dotenv').config();
 
 const PORT = parseInt(process.env.PORT!) || 4000;
@@ -14,7 +14,11 @@ const io = new Server(PORT, {
 	}
 });
 
+io.use(setupUser);
+
 io.on('connection', (socket) => {
+	const userId = socket.handshake.auth.userId;
+	const buddyCode = socket.data.buddyCode;
 
 	socket.on('hello', async () => {
 		try {
@@ -36,7 +40,7 @@ io.on('connection', (socket) => {
 	socket.on('newUser', async (user: {}) => {
 		try {
 			await client.connect();
-			const response = await client
+			await client
 				.db(process.env.MONGO_DB_NAME)
 				.collection('users')
 				.insertOne(user);
@@ -50,7 +54,7 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('getList', async (userId: string, cb: (taskList: any) => void) => {
+	socket.on('getList', async (cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
 			const response = await client
@@ -67,7 +71,7 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('addTask', async (userId: string, task: Document, cb: (taskList: any) => void) => {
+	socket.on('addTask', async (task: Document, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
 			const oldList = await client
@@ -106,7 +110,7 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('updateTask', async (userId: string, task: Document, cb: (taskList: any) => void) => {
+	socket.on('updateTask', async (task: Document, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
 			const oldList = await client
@@ -147,7 +151,7 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('deleteTask', async (userId: string, taskId: string, cb: (taskList: any) => void) => {
+	socket.on('deleteTask', async (taskId: string, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
 			const oldList = await client
@@ -186,7 +190,7 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('requestBuddy', async (userId: Condition<ObjectId>, buddyCode: string) => {
+	socket.on('requestBuddy', async (buddyCode: string) => {
 
 		try {
 			await client.connect();
@@ -202,10 +206,7 @@ io.on('connection', (socket) => {
 					);
 				
 				socket.join(buddyCode);
-
 			}
-
-
 
 			if (buddy?.buddy_id === userId) { // if buddy already added user
 				await collection.updateOne( // flag approval on user
@@ -217,6 +218,9 @@ io.on('connection', (socket) => {
 					{ _id: buddy?._id },
 					{ buddy_approved: true }
 				)
+
+				// fetchSockets, if buddy is online, immediately send approval prompt
+				// if not, handle it in the db and check next time user logs in
 
 				// send approval signal/request completion to both users
 			} else if (buddy && !buddy.buddy_id) {

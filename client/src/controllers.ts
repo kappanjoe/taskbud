@@ -1,12 +1,12 @@
 import { Socket } from "socket.io-client";
-import { Task, TaskList } from "../types/classes";
+import { Task, TaskList } from "./types/classes";
 
-export const loadTaskList = (socket: Socket, userId: string, setTaskList: (value: React.SetStateAction<TaskList>) => void) => {
+export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void) => {
   try {
     const localList = localStorage.getItem('localList');
     if (localList === null) {
       console.warn('User task list could not be loaded from localStorage.');
-      socket.emit('getList', userId, (taskList: TaskList) => {
+      socket.emit('getList', (taskList: TaskList) => {
         setTaskList(taskList);
         localStorage.setItem('localList', JSON.stringify(taskList));
         console.log('Task list downloaded.');
@@ -21,9 +21,9 @@ export const loadTaskList = (socket: Socket, userId: string, setTaskList: (value
   }
 };
 
-export const addTaskRemote = (socket: Socket, userId: string, task: Task) => {
+export const addTaskRemote = (socket: Socket, task: Task) => {
   try {
-    socket.emit('addTask', userId, task, (taskList: TaskList) => {
+    socket.emit('addTask', task, (taskList: TaskList) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
@@ -31,9 +31,9 @@ export const addTaskRemote = (socket: Socket, userId: string, task: Task) => {
   }
 };
 
-export const updateTaskRemote = (socket: Socket, userId: string, task: Task) => {
+export const updateTaskRemote = (socket: Socket, task: Task) => {
   try {
-    socket.emit('updateTask', userId, task, (taskList: TaskList) => {
+    socket.emit('updateTask', task, (taskList: TaskList) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
@@ -41,9 +41,9 @@ export const updateTaskRemote = (socket: Socket, userId: string, task: Task) => 
   }
 };
 
-export const deleteTaskRemote = (socket: Socket, userId: string, taskId: string) => {
+export const deleteTaskRemote = (socket: Socket, taskId: string) => {
   try {
-    socket.emit('deleteTask', userId, taskId, (taskList: TaskList) => {
+    socket.emit('deleteTask', taskId, (taskList: TaskList) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {

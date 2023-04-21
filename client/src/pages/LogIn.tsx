@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import { socket } from '../socket';
 
 function LogIn() {
 	const navigate = useNavigate();
@@ -14,12 +15,14 @@ function LogIn() {
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { error } = await auth.signInWithPassword({ email, password });
+		const { data, error } = await auth.signInWithPassword({ email, password });
 
 		if (error) {
 			console.error(error);
 		} else {
+			socket.auth = { userId: data.user.id };
 			navigate('/');
+			socket.connect();
 		}
 	};
 
