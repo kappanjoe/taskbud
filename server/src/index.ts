@@ -1,7 +1,7 @@
 import { Server } from 'socket.io';
 import { client } from './mongodb';
 import { error } from 'console';
-import { Document } from 'mongodb';
+import { Condition, Document, ObjectId } from 'mongodb';
 require('dotenv').config();
 
 const PORT = parseInt(process.env.PORT!) || 4000;
@@ -41,8 +41,8 @@ io.on('connection', (socket) => {
 				.collection('users')
 				.insertOne(user);
 
-			console.log('New user: ', response);
-			socket.emit('userAdded', response);
+			console.log('New user.');
+
 		} catch (err) {
 			console.dir(err);
 		} finally {
@@ -58,7 +58,7 @@ io.on('connection', (socket) => {
 				.collection('task-lists')
 				.findOne({ owner_id: userId });
 
-			console.log('Found list: ', response);
+			console.log('Found list.');
 			if (response) { cb(response) };
 		} catch (err) {
 			console.dir(err);
@@ -90,11 +90,11 @@ io.on('connection', (socket) => {
 					.db(process.env.MONGO_DB_NAME)
 					.collection('task-lists')
 					.findOneAndReplace(
-						{ _id: oldList._id },
-						newList,
-						{ returnDocument: "after" }
-					);
-				console.log("Task added: ", response.value);
+							{ _id: oldList._id },
+							newList,
+							{ returnDocument: "after" }
+						);
+				console.log("Task added.");
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
@@ -112,9 +112,7 @@ io.on('connection', (socket) => {
 			const oldList = await client
 				.db(process.env.MONGO_DB_NAME)
 				.collection('task-lists')	
-				.findOne(
-						{ owner_id: userId }
-					);
+				.findOne({ owner_id: userId });
 
 			let newList: Document;
 
@@ -133,11 +131,11 @@ io.on('connection', (socket) => {
 					.db(process.env.MONGO_DB_NAME)
 					.collection('task-lists')
 					.findOneAndReplace(
-						{ _id: oldList._id },
-						newList,
-						{ returnDocument: "after" }
-					);
-				console.log("Task updated: ", response.value);
+							{ _id: oldList._id },
+							newList,
+							{ returnDocument: "after" }
+						);
+				console.log("Task updated.");
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
@@ -155,9 +153,7 @@ io.on('connection', (socket) => {
 			const oldList = await client
 				.db(process.env.MONGO_DB_NAME)
 				.collection('task-lists')	
-				.findOne(
-						{ owner_id: userId }
-					);
+				.findOne({ owner_id: userId });
 
 			let newList: Document;
 
@@ -174,15 +170,62 @@ io.on('connection', (socket) => {
 					.db(process.env.MONGO_DB_NAME)
 					.collection('task-lists')
 					.findOneAndReplace(
-						{ _id: oldList._id },
-						newList,
-						{ returnDocument: "after" }
-					);
-				console.log("Task updated: ", response.value);
+							{ _id: oldList._id },
+							newList,
+							{ returnDocument: "after" }
+						);
+				console.log("Task updated.");
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
 			}
+		} catch (err) {
+			console.dir(err);
+		} finally {
+			await client.close();
+		}
+	});
+
+	socket.on('requestBuddy', async (userId: Condition<ObjectId>, buddyCode: string) => {
+
+		try {
+			await client.connect();
+      const db = client.db(process.env.MONGO_DB_NAME);
+      const collection = db.collection('users');
+
+			const buddy = await collection.findOne({ buddy_code: buddyCode }); // get buddy using code
+			
+			if (buddy) {
+				const user = await collection.findOneAndUpdate( // add buddyid to user pending approval
+						{ _id: userId },
+						{ buddy_id: buddy?._id, buddy_approved: false }
+					);
+				
+				socket.join(buddyCode);
+
+			}
+
+
+
+			if (buddy?.buddy_id === userId) { // if buddy already added user
+				await collection.updateOne( // flag approval on user
+						{ _id: userId },
+						{ buddy_approved: true }
+					)
+
+				await collection.updateOne( // flag approval on buddy
+					{ _id: buddy?._id },
+					{ buddy_approved: true }
+				)
+
+				// send approval signal/request completion to both users
+			} else if (buddy && !buddy.buddy_id) {
+				// send request to buddy
+				// emit request completion
+			} else {
+				// buddy not found
+			}
+
 		} catch (err) {
 			console.dir(err);
 		} finally {
