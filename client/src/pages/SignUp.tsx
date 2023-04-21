@@ -28,7 +28,7 @@ function SignUp() {
 	return (
 		<div>
 			<form onSubmit={handleSubmit}>
-				<h1>Welcome Back!</h1>
+				<h1>Create an Account:</h1>
 				<label>
 					Email
 					<input

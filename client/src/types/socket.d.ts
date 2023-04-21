@@ -10,4 +10,5 @@ export interface ClientToServerEvents {
 	getList: (userId: string, cb: (taskList: TaskList) => void) => void;
 	addTask: (userId: string, task: Task, cd: (taskList: TaskList) => void) => void;
 	updateTask: (userId: string, task: Task, cd: (taskList: TaskList) => void) => void;
+	requestBuddy: (userId: string, buddyCode: string) => void;
 }
