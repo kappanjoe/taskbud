@@ -20,6 +20,8 @@ export const SocketContextProvider = ({ children }: Props) => {
   const [isPaired, setIsPaired] = useState<boolean>(false);
   const [buddy, setBuddy] = useState<string>("");
   const [buddyProgress, setBuddyProgress] = useState<number>(0.0);
+
+  const { user, session } = useAuth();
   
   const handleBuddyUpdate = (buddyName: string, buddyUpdate: number) => {
 		setIsPaired(buddyName !== "");
@@ -49,16 +51,22 @@ export const SocketContextProvider = ({ children }: Props) => {
       console.log("Socket disconnected.");
     };
 
+    if (user) {
+      socket.auth = { userId: user.id, progress: String(0.0) };
+      socket.connect();
+    }
+
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('buddyUpdate', handleBuddyUpdate);
+
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('buddyUpdate', handleBuddyUpdate);
     };
-  }, []);
+  }, [user, session]);
 
 	return <SocketContext.Provider value={{ socket, isConnected, isPaired, buddy, buddyProgress }} >
 		{ children }

@@ -5,6 +5,7 @@ import { Task } from "./classes";
 export interface SupabaseContext {
 	auth: SupabaseAuthClient;
 	user: User | null;
+  session: Session | null;
 };
 
 export interface SocketIOContext {
