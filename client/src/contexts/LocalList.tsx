@@ -3,7 +3,6 @@ import { Task, TaskList } from '../types/classes';
 import { TaskListContext } from "../types/contexts";
 import { useAuth } from "./Auth";
 import { useSocket } from "./Socket";
-// import { socket } from "../socket";
 import { loadTaskList } from "../controllers";
 
 const LocalListContext = createContext<TaskListContext>({

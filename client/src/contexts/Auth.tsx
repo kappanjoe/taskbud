@@ -40,6 +40,7 @@ export const AuthContextProvider = ({ children }: Props) => {
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
+	// eslint-disable-next-line react-hooks/exhaustive-deps
 	const memo = useMemo(() => ({ auth, user, session }), [user, session]);
 
 	return <AuthContext.Provider value={{ auth: memo.auth, user: memo.user, session: memo.session }} >

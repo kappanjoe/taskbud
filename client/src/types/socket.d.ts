@@ -1,5 +1,5 @@
 export interface ServerToClientEvents {
-	buddyRequest: ({ sender: string}) => void;
+	buddyRequest: (buddyName: string) => void;
 	buddyUpdate: (buddyName: string, buddyProgress: number) => void;
 }
 

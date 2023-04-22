@@ -66,3 +66,15 @@ export const sendBuddyRequest = (socket: Socket, buddyCode: string, setSuccessfu
     console.warn('Buddy request failed.');
   }
 };
+
+export const sendRequestReply = (socket: Socket, buddyCode: string, approved: boolean) => {
+  try {
+    if (approved) {
+      socket.emit('approveRequest', buddyCode);
+    } else {
+      socket.emit('denyRequest', buddyCode);
+    }
+  } catch {
+    console.warn('Buddy request reply failed.');
+  }
+};
