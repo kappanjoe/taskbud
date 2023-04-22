@@ -1,29 +1,38 @@
-import React, { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom';
-import { useAuth } from '../contexts/Auth';
-import { socket } from '../socket';
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
+import { useSocket } from '../contexts/Socket';
+import { sendBuddyRequest } from '../controllers';
+// import { socket } from '../socket';
 
 function BuddyReqView() {
   const navigate = useNavigate();
 
+  const { socket } = useSocket();
+
+  const [successful, setSuccessful] = useState(false);
+  const [failed, setFailed] = useState(false);
 	const [code1, setCode1] = useState('');
   const [code2, setCode2] = useState('');
   const [code3, setCode3] = useState('');
 
-	const { auth, user } = useAuth();
+  useEffect(() => {
+    if (successful || failed) {
+      navigate('/');
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful, failed]);
 
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-    // socket.emit('requestBuddy', user.id, [code1, code2, code3].join(" "));
-    navigate('/');
+    sendBuddyRequest(socket, [code1, code2, code3].join(' '), setSuccessful, setFailed);
 	};
 
 	return (
 		<div>
 			<form onSubmit={handleSubmit}>
 				<h1>Connect with your Buddy</h1>
-				<label>
+				<label> {/* TODO: display personal buddy code */}
 					Buddy's Code: 
 					<input
 						className="buddy-code-input"
@@ -73,6 +82,6 @@ function BuddyReqView() {
 			</form>
 		</div>
 	);
-}
+};
 
-export default BuddyReqView
+export default BuddyReqView;

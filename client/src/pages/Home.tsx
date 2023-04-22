@@ -1,7 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { socket } from '../socket';
+// import { socket } from '../socket';
 import { useAuth } from '../contexts/Auth';
+import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import TaskListView from '../components/TaskListView';
 
@@ -9,6 +10,7 @@ import './Home.css';
 
 function Home() {
 	const { auth, user } = useAuth();
+	const { socket } = useSocket();
 	const { taskList, clearTaskListLocal } = useLocalList();
 	const navigate = useNavigate();
 
@@ -34,6 +36,7 @@ function Home() {
 				}
 			</div>
 			<TaskListView taskList={ taskList } />
+			<button className="home-add-task" onClick={() => navigate('/request-buddy')}>Request Buddy</button>
 			<button className="home-add-task" onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)

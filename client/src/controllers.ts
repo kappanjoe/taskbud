@@ -50,3 +50,19 @@ export const deleteTaskRemote = (socket: Socket, taskId: string) => {
     console.warn('User task list could not be updated remotely.');
   }
 };
+
+export const sendBuddyRequest = (socket: Socket, buddyCode: string, setSuccessful: (value: React.SetStateAction<boolean>) => void, setFailed: (value: React.SetStateAction<boolean>) => void) => {
+  try {
+    socket.emit('sendBuddyRequest', buddyCode, (err?: any) => {
+      if (err) {
+        console.log(err);
+        setFailed(true);
+      } else {
+        console.log('Sent buddy request.');
+        setSuccessful(true);
+      }
+    });
+  } catch {
+    console.warn('Buddy request failed.');
+  }
+};

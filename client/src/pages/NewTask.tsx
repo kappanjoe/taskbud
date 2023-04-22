@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 import { addTaskRemote } from '../controllers';
 import * as uuid from 'uuid';
-import { socket } from '../socket';
+// import { socket } from '../socket';
 
 function NewTask() {
 	
 	const navigate = useNavigate();
 	const { user } = useAuth();
+	const { socket } = useSocket();
 	const { addTaskLocal } = useLocalList();
 
 	const [body, setBody] = useState<string>('');

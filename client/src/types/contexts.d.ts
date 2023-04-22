@@ -1,3 +1,5 @@
+import { Socket } from "socket.io-client";
+import { ClientToServerEvents, ServerToClientEvents } from "./socket";
 import { Task } from "./classes";
 
 export interface SupabaseContext {
@@ -6,7 +8,14 @@ export interface SupabaseContext {
 };
 
 export interface SocketIOContext {
-	isConnected: boolean;
+	socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+  isConnected: boolean;
+};
+
+export interface AccountabilityContext {
+	isPaired: boolean;
+  buddy: string;
+  buddyProgress: number;
 };
 
 export interface TaskListContext {

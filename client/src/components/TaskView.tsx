@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { socket } from '../socket';
+// import { socket } from '../socket';
 import { updateTaskRemote } from '../controllers';
 import { useAuth } from '../contexts/Auth';
+import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 
@@ -15,6 +16,7 @@ function TaskView(props: { task: Task }) {
   const { updateTaskLocal, setSelectedTask } = useLocalList();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { socket } = useSocket();
 
   const [isCompleted, setIsCompleted] = useState(completed);
 
