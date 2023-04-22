@@ -1,0 +1,46 @@
+.form-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.form-wrapper {
+  width: calc(100% - 100pt);
+  display: flex;
+  flex-direction: column;
+  margin: 5pt 50pt;
+}
+
+.form-header {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.form-label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+input {
+  padding: 2pt 4pt;
+  border: 0;
+  border-radius: 4pt;
+  background-color:antiquewhite;
+}
+
+.input-task {
+  width: 100%;
+}
+
+.input-text {
+
+}
+
+.input-date {
+
+}
+
+.buddy-code-input {
+  width: 20pt;
+}

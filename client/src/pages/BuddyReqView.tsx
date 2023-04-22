@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { useSocket } from '../contexts/Socket';
 import { sendBuddyRequest } from '../controllers';
-// import { socket } from '../socket';
+
+import './Form.css';
 
 function BuddyReqView() {
   const navigate = useNavigate();
@@ -29,10 +30,10 @@ function BuddyReqView() {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit}>
-				<h1>Connect with your Buddy</h1>
-				<label> {/* TODO: display personal buddy code */}
+		<div className="form-container">
+			<form className="form-wrapper" onSubmit={handleSubmit}>
+				<h1 className="form-header">Connect with your Buddy</h1>
+				<label className="form-label"> {/* TODO: display personal buddy code */}
 					Buddy's Code: 
 					<input
 						className="buddy-code-input"
@@ -78,7 +79,7 @@ function BuddyReqView() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Send Request</button>
+				<button className="button-primary" type="submit">Send Request</button>
 			</form>
 		</div>
 	);

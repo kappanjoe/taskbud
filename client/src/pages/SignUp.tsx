@@ -5,6 +5,8 @@ import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 
+import './Form.css';
+
 function SignUp() {
 	const navigate = useNavigate();
 
@@ -30,12 +32,13 @@ function SignUp() {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit}>
-				<h1>Create an Account:</h1>
-				<label>
+		<div className="form-container">
+			<form className="form-wrapper" onSubmit={handleSubmit}>
+				<h1 className="form-header">Create an Account:</h1>
+				<label className="form-label">
 					Email
 					<input
+						className="input-text"
 						id="signup-email"
 						type="email"
 						placeholder='someone@somewhere.net'
@@ -47,9 +50,10 @@ function SignUp() {
 					/>
 				</label>
 				<br/>
-				<label>
+				<label className="form-label">
 					Password
 					<input
+						className="input-text"
 						id="signup-pw"
 						type="password"
 						autoComplete="new-password"
@@ -60,7 +64,7 @@ function SignUp() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Sign Up</button>
+				<button className="button-primary" type="submit">Sign Up</button>
 			</form>
 			<p>
 				Already have an account? <Link to="/login">Click here to log in.</Link>

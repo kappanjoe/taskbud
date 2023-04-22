@@ -26,7 +26,7 @@ function Home() {
 
 	return (
 		<div className="home-container">
-			{<RequestView/>}
+			{ <RequestView/> }
 			<h1 className="home-header">task bud</h1>
 			<div className="home-header-user-container">
 				{ user && <p className="home-username">Current user: {user.email}</p> }
@@ -37,8 +37,8 @@ function Home() {
 				}
 			</div>
 			<TaskListView taskList={ taskList } />
-			<button className="home-add-task" onClick={() => navigate('/request-buddy')}>Request Buddy</button>
-			<button className="home-add-task" onClick={() => navigate('/add-task')}>Add Task</button>
+			<button className="button-primary" onClick={() => navigate('/request-buddy')}>Request Buddy</button>
+			<button className="button-primary" onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)
 };

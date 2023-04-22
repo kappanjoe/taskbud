@@ -8,6 +8,8 @@ import { Task } from '../types/classes';
 import { addTaskRemote } from '../controllers';
 import * as uuid from 'uuid';
 
+import './Form.css';
+
 function NewTask() {
 	
 	const navigate = useNavigate();
@@ -40,12 +42,13 @@ function NewTask() {
 	};
 
 	return (
-		<div>
-			<button onClick={() => navigate('/')}>Go Back</button>
-			<form onSubmit={handleSubmit}>
-				<h1>Add a new task:</h1>
-				<label>
+		<div className="form-container">
+			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<form className="form-wrapper" onSubmit={handleSubmit}>
+				<h1 className="form-header">Add a new task:</h1>
+				<label className="form-label">
 					<input
+						className="input-task"
 						id="newtask-body"
 						type="text"
 						placeholder='Do the task'
@@ -57,9 +60,10 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-				<label>
+				<label className="form-label">
 					Memo:
 					<input
+						className="input-text"
 						id="newtask-memo"
 						type="text"
             placeholder='(Optional)'
@@ -70,9 +74,10 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-        <label> 
+        <label className="form-label"> 
 					Start date:
 					<input
+						className="input-date"
 						id="newtask-start"
 						type="date"
 						value={start}
@@ -82,10 +87,10 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-        <label>
+        <label className="form-label">
 					Due date:
 					<input
-						id="newtask-due"
+						className="input-date"
 						type="date"
 						value={due}
 						onChange={(e) => {
@@ -94,7 +99,7 @@ function NewTask() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Add Task</button>
+				<button className="button-primary" type="submit">Add Task</button>
 			</form>
 		</div>
 	);
