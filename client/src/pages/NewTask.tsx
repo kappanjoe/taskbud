@@ -7,7 +7,6 @@ import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 import { addTaskRemote } from '../controllers';
 import * as uuid from 'uuid';
-// import { socket } from '../socket';
 
 function NewTask() {
 	

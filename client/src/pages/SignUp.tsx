@@ -4,8 +4,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
-// import { socket } from '../socket';
-import { User } from '../types/classes';
 
 function SignUp() {
 	const navigate = useNavigate();
@@ -25,7 +23,7 @@ function SignUp() {
 		if (error) {
 			console.error(error);
 		} else { // TODO: implement custom usernames or generate buddy codes
-			socket.auth = { userId: data.user.id, progress: String(listProgress), new: "true" };
+			socket.auth = { userId: data.user.id, progress: String(listProgress)};
 			socket.connect();
 			navigate('/');
 		}

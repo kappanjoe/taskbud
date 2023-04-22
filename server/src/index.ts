@@ -21,7 +21,7 @@ io.on('connection', (socket) => {
 	const userBuddyCode = socket.data.buddyCode;
 
 	if (socket.data.pendingReqFrom) {
-		socket.timeout(5000).emit('buddyRequest', { sender: socket.data.pendingReqFrom }, (err: Error) => console.log(err) );
+		socket.emit('buddyRequest', socket.data.pendingReqFrom, (err: Error) => console.log(err) );
 	}
 
 	socket.on('getList', async (cb: (taskList: any) => void) => {

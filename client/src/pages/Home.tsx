@@ -1,9 +1,9 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { socket } from '../socket';
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
+import RequestView from '../components/RequestView';
 import TaskListView from '../components/TaskListView';
 
 import './Home.css';
@@ -26,6 +26,7 @@ function Home() {
 
 	return (
 		<div className="home-container">
+			{<RequestView/>}
 			<h1 className="home-header">task bud</h1>
 			<div className="home-header-user-container">
 				{ user && <p className="home-username">Current user: {user.email}</p> }
