@@ -2,10 +2,13 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { AccountabilityContext, SocketIOContext } from "../types/contexts";
 import { socket } from "../socket";
 import { useAuth } from "./Auth";
+import { sendRequestReply } from "../controllers";
 
 const SocketContext = createContext<SocketIOContext & AccountabilityContext>({
 	socket: socket,
   isConnected: false,
+  requestRecvd: false,
+  handleBuddyApproval: () => {},
   isPaired: false,
   buddy: "",
   buddyProgress: 0.0
@@ -17,6 +20,7 @@ type Props = {
 
 export const SocketContextProvider = ({ children }: Props) => {
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
+  const [requestRecvd, setRequestRecvd] = useState<boolean>(false);
   const [isPaired, setIsPaired] = useState<boolean>(false);
   const [buddy, setBuddy] = useState<string>("");
   const [buddyProgress, setBuddyProgress] = useState<number>(0.0);
@@ -30,10 +34,19 @@ export const SocketContextProvider = ({ children }: Props) => {
 	};
 
 	const handleBuddyRequest = (buddyName: string) => {
-
+    setRequestRecvd(true);
+    setBuddy(buddyName);
 	};
 
-  const getBuddy = () => {};
+  const handleBuddyApproval = (approved: boolean) => {
+    sendRequestReply(socket, buddy, approved);
+    if (approved) {
+      setIsPaired(true);
+    } else {
+      setBuddy('');
+    }
+    setRequestRecvd(false);
+  }
   
   useEffect(() => {
     function onConnect() {
@@ -59,16 +72,18 @@ export const SocketContextProvider = ({ children }: Props) => {
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('buddyUpdate', handleBuddyUpdate);
-
+    socket.on('buddyRequest', handleBuddyRequest);
 
     return () => {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('buddyUpdate', handleBuddyUpdate);
+      socket.off('buddyRequest', handleBuddyRequest);
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, session]);
 
-	return <SocketContext.Provider value={{ socket, isConnected, isPaired, buddy, buddyProgress }} >
+	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress }} >
 		{ children }
 	</SocketContext.Provider>
 };

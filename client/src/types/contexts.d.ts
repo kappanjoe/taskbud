@@ -14,7 +14,9 @@ export interface SocketIOContext {
 };
 
 export interface AccountabilityContext {
-	isPaired: boolean;
+	requestRecvd: boolean;
+  handleBuddyApproval: (approved: boolean) => void;
+  isPaired: boolean;
   buddy: string;
   buddyProgress: number;
 };
