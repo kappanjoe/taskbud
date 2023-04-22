@@ -40,11 +40,6 @@ export const SocketContextProvider = ({ children }: Props) => {
 
   const handleBuddyApproval = (approved: boolean) => {
     sendRequestReply(socket, buddy, approved);
-    if (approved) {
-      setIsPaired(true);
-    } else {
-      setBuddy('');
-    }
     setRequestRecvd(false);
   }
   
@@ -81,7 +76,7 @@ export const SocketContextProvider = ({ children }: Props) => {
       socket.off('buddyRequest', handleBuddyRequest);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, session]);
+  }, [user, session, buddy]);
 
 	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress }} >
 		{ children }

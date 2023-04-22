@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// import { socket } from '../socket';
 import { updateTaskRemote } from '../controllers';
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
