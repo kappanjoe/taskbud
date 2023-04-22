@@ -18,7 +18,10 @@
 
 .task-checkbox {
   margin: 1pt 5pt 5pt -15pt;
-  color: antiquewhite;
+  padding: 2pt 4pt;
+  border: 0;
+  border-radius: 4pt;
+  background-color:antiquewhite;
 }
 
 .task-button-wrapper {

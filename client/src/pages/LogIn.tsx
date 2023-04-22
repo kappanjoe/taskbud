@@ -32,12 +32,13 @@ function LogIn() {
 	};
 
 	return (
-		<div>
-			<form onSubmit={handleSubmit}>
-				<h1>Welcome Back!</h1>
-				<label>
+		<div className="form-container">
+			<form className="form-wrapper" onSubmit={handleSubmit}>
+				<h1 className="form-header">Welcome Back!</h1>
+				<label className="form-label">
 					Email
 					<input
+						className="input-text"
 						id="login-email"
 						type="email"
 						placeholder='someone@somewhere.net'
@@ -49,9 +50,10 @@ function LogIn() {
 					/>
 				</label>
 				<br/>
-				<label>
+				<label className="form-label">
 					Password
 					<input
+						className="input-text"
 						id="login-pw"
 						type="password"
 						value={password}
@@ -62,7 +64,7 @@ function LogIn() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Log In</button>
+				<button className="button-primary" type="submit">Log In</button>
 			</form>
 			<p>
 				Need an account? <Link to="/signup">Click here to make one.</Link>
