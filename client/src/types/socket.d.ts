@@ -1,14 +1,15 @@
 export interface ServerToClientEvents {
-	noArg: () => void;
-	basicEmit: (a: number, b: string, c: Buffer) => void;
-	withAck: (d: string, callback: (e: number) => void) => void;
+	buddyRequest: ({ sender: string}) => void;
+	buddyUpdate: (buddyName: string, buddyProgress: number) => void;
 }
 
 export interface ClientToServerEvents {
 	hello: () => void;
-	newUser: ({ _id: string }) => void;
 	getList: (cb: (taskList: TaskList) => void) => void;
-	addTask: (task: Task, cd: (taskList: TaskList) => void) => void;
-	updateTask: (task: Task, cd: (taskList: TaskList) => void) => void;
-	requestBuddy: (buddyCode: string) => void;
+	addTask: (task: Task, cb: (taskList: TaskList) => void) => void;
+	updateTask: (task: Task, cb: (taskList: TaskList) => void) => void;
+	getBuddyProgress: (cb: (buddyName: string, buddyProgress: number) => void) => void;
+	sendBuddyRequest: (buddyCode: string, cb: (err: any) => void) => void;
+	approveRequest: (buddyCode: string) => void;
+	denyRequest: (buddyCode: string) => void;
 }

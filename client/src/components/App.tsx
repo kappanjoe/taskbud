@@ -5,6 +5,7 @@ import { AuthContextProvider } from '../contexts/Auth';
 import { LocalListContextProvider } from '../contexts/LocalList';
 import { SocketContextProvider } from '../contexts/Socket';
 
+import BuddyReqView from '../pages/BuddyReqView';
 import DeleteTask from '../pages/DeleteTask';
 import EditTask from '../pages/EditTask';
 import Home from '../pages/Home';
@@ -19,16 +20,17 @@ function App() {
     <div className="App">
       <AuthContextProvider>
         <SocketContextProvider>
-          <LocalListContextProvider>
-            <Routes>
-              <Route path="/" element={ <Home/> } />
-              <Route path="/signup" element={ <SignUp/> } />
-              <Route path="/login" element={ <LogIn/> } />
-              <Route path="/add-task" element={ <NewTask/> } />
-              <Route path="/edit-task" element={ <EditTask/> } />
-              <Route path="/delete-task" element={ <DeleteTask/> } />
-            </Routes>
-          </LocalListContextProvider>
+            <LocalListContextProvider>
+              <Routes>
+                <Route path="/" element={ <Home/> } />
+                <Route path="/signup" element={ <SignUp/> } />
+                <Route path="/login" element={ <LogIn/> } />
+                <Route path="/add-task" element={ <NewTask/> } />
+                <Route path="/edit-task" element={ <EditTask/> } />
+                <Route path="/delete-task" element={ <DeleteTask/> } />
+                <Route path="/request-buddy" element={ <BuddyReqView/> } />
+              </Routes>
+            </LocalListContextProvider>
         </SocketContextProvider>
       </AuthContextProvider>
     </div>

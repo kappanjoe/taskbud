@@ -3,7 +3,7 @@ import { Task, TaskList } from '../types/classes';
 import { TaskListContext } from "../types/contexts";
 import { useAuth } from "./Auth";
 import { useSocket } from "./Socket";
-import { socket } from "../socket";
+// import { socket } from "../socket";
 import { loadTaskList } from "../controllers";
 
 const LocalListContext = createContext<TaskListContext>({
@@ -27,7 +27,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const [selectedTask, setSelectedTask] = useState<Task>(new Task());
 	const [listProgress, setListProgress] = useState<number>(0.0);
 	const { user } = useAuth();
-	const { isConnected } = useSocket();
+	const { socket, isConnected } = useSocket();
 
 	useEffect(() => {
 		const localList = localStorage.getItem('localList');
@@ -91,7 +91,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 			if (task.completed) { completedCt++; }
 		});
 
-		setListProgress(completedCt / allTasksCt);
+		setListProgress(completedCt / allTasksCt || 0.0);
 	};
 
 	const clearTaskListLocal = () => {
