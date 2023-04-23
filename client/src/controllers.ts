@@ -14,7 +14,7 @@ export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetState
     } else {
       let list = JSON.parse(localList);
       setTaskList(list);
-      console.log('User task list loaded from localStorage: ', localList);
+      console.log('User task list loaded from localStorage.');
     }
   } catch (err) {
     console.error(err);
