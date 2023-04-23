@@ -1,0 +1,6 @@
+.progress-view {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 10pt;
+}

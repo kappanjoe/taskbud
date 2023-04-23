@@ -6,12 +6,12 @@ require('dotenv').config();
 
 export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
   const userId = socket.handshake.auth.userId;
-  
+
   try {
     if (userId) {
-      console.log("Attempting to connect to client...");
+
       await client.connect();
-      console.log("Client connected");
+
       const db = client.db(process.env.MONGO_DB_NAME);
       const collection = db.collection('users');
 
@@ -56,6 +56,7 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
     return next(err);
   } finally {
     await client.close();
+
   }
   
 };

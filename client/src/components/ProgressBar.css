@@ -1,0 +1,26 @@
+.progress-bar-container {
+  text-align: left;
+  padding: 2pt 14pt;
+  margin: 4pt 0;
+}
+
+.progress-bar-header {
+  margin: 2pt;
+}
+
+.progress-bar-wrapper {
+  height: 8pt;
+  background-color: antiquewhite;
+  border-radius: 8pt;
+}
+
+.progress-bar-meter {
+  height: 8pt;
+  background-color: lightgreen;
+  border-radius: 8pt;
+}
+
+.buddy {
+  background-color: lightblue;
+  width: 20% !important;
+}
