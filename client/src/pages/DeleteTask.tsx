@@ -8,14 +8,14 @@ import { socket } from '../socket';
 
 function DeleteTask() {
 	const navigate = useNavigate();
-	const { user } = useAuth();
+	const { session } = useAuth();
 	const { deleteTaskLocal, selectedTask } = useLocalList();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
 		deleteTaskLocal(selectedTask._id);
-		if (user) { deleteTaskRemote(socket, selectedTask._id); }
+		if (session) { deleteTaskRemote(socket, selectedTask._id); }
 
     navigate('/');
 	};

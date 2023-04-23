@@ -4,9 +4,11 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 
 const PrivateRoute = () => {
-	const { user } = useAuth();
+	const { session, isLoading } = useAuth();
 
-	return user ? <Outlet /> : <Navigate to='/signup' />;
+	return !isLoading
+		? (session ? <Outlet /> : <Navigate to='/signup' />)
+		: null;
 
 };
 

@@ -14,7 +14,7 @@ function TaskView(props: { task: Task }) {
   const { body, completed, memo, start, due } = props.task;
   const { updateTaskLocal, setSelectedTask } = useLocalList();
   const navigate = useNavigate();
-  const { user } = useAuth();
+  const { session } = useAuth();
   const { socket } = useSocket();
 
   const [isCompleted, setIsCompleted] = useState(completed);
@@ -28,7 +28,7 @@ function TaskView(props: { task: Task }) {
     newTask.completed = newCompleted;
 
     updateTaskLocal(newTask);
-    if (user) { updateTaskRemote(socket, newTask); }
+    if (session) { updateTaskRemote(socket, newTask); }
   };
   
   return (

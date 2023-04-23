@@ -6,7 +6,7 @@ import { Task, TaskList } from '../types/classes';
 
 function TaskListView(props: { taskList: TaskList }) {
   const { taskList } = props;
-  const { user } = useAuth();
+  const { session } = useAuth();
   
   return (
     <div>
@@ -15,7 +15,7 @@ function TaskListView(props: { taskList: TaskList }) {
           return <TaskView task={ task } key={task._id} />
         })
       }
-      { (user && taskList.tasks.length > 0) && <ProgressView/> }
+      { (session && taskList.tasks.length > 0) && <ProgressView/> }
     </div>
   );
 };

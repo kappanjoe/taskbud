@@ -3,13 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
-import RequestView from '../components/RequestView';
+import RequestApprovalDialog from '../components/RequestApprovalDialog';
 import TaskListView from '../components/TaskListView';
 
 import './Home.css';
 
 function Home() {
-	const { auth, user } = useAuth();
+	const { auth, session } = useAuth();
 	const { socket } = useSocket();
 	const { taskList, clearTaskListLocal } = useLocalList();
 	const navigate = useNavigate();
@@ -26,12 +26,12 @@ function Home() {
 
 	return (
 		<div className="home-container">
-			{ <RequestView/> }
+			{ <RequestApprovalDialog/> }
 			<h1 className="home-header">task bud</h1>
 			<div className="home-header-user-container">
-				{ user && <p className="home-username">Current user: {user.email}</p> }
+				{ session && <p className="home-username">Current user: {session.user.email}</p> }
 				{
-					user
+					session
 						? <button className="button-primary" onClick={handleLogout}>Log Out</button>
 						: <button className="button-primary" onClick={() => navigate('/login')}>Log In</button>
 				}
