@@ -1,7 +1,7 @@
-import React from 'react'
-import { useSocket } from '../contexts/Socket'
+import React from 'react';
+import { useSocket } from '../contexts/Socket';
 
-function RequestView() {
+function RequestApprovalDialog() {
   const { handleBuddyApproval, requestRecvd, buddy } = useSocket();
 
   return (
@@ -10,7 +10,7 @@ function RequestView() {
       <button onClick={() => handleBuddyApproval(false)}>Deny</button>
       <button onClick={() => handleBuddyApproval(true)}>Approve</button>
     </dialog>
-  )
-}
+  );
+};
 
-export default RequestView
+export default RequestApprovalDialog;

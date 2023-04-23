@@ -5,7 +5,7 @@ import { sendBuddyRequest } from '../controllers';
 
 import './Form.css';
 
-function BuddyReqView() {
+function SendBuddyReq() {
   const navigate = useNavigate();
 
   const { socket } = useSocket();
@@ -85,4 +85,4 @@ function BuddyReqView() {
 	);
 };
 
-export default BuddyReqView;
+export default SendBuddyReq;

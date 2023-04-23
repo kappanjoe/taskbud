@@ -1,14 +1,6 @@
-* {
-  padding: 0;
-  margin: 0;
-  font-family: 'Rokkitt', serif;
-  font-weight: 300;
-}
-
 .App {
   height: 100vh;
   text-align: center;
-  background-color: #fffaf3;
 }
 
 .button-primary {

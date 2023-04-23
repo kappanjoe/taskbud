@@ -26,7 +26,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   const [buddy, setBuddy] = useState<string>("");
   const [buddyProgress, setBuddyProgress] = useState<number>(0.0);
 
-  const { user, session } = useAuth();
+  const { session } = useAuth();
   
   const handleBuddyUpdate = (buddyName: string, buddyUpdate: number) => {
 		setIsPaired(buddyName !== "");
@@ -55,8 +55,8 @@ export const SocketContextProvider = ({ children }: Props) => {
       console.log("Socket disconnected.");
     };
 
-    if (user) {
-      socket.auth = { userId: user.id };
+    if (session) {
+      socket.auth = { userId: session.user.id };
       socket.connect();
     }
 
@@ -72,7 +72,7 @@ export const SocketContextProvider = ({ children }: Props) => {
       socket.off('buddyRequest', handleBuddyRequest);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user, session, buddy]);
+  }, [session]);
 
 	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, handleBuddyUpdate, isPaired, buddy, buddyProgress }} >
 		{ children }

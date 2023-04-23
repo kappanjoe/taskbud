@@ -10,10 +10,10 @@ import * as uuid from 'uuid';
 
 import './Form.css';
 
-function NewTask() {
+function AddTask() {
 	
 	const navigate = useNavigate();
-	const { user } = useAuth();
+	const { session } = useAuth();
 	const { socket } = useSocket();
 	const { addTaskLocal } = useLocalList();
 
@@ -36,7 +36,7 @@ function NewTask() {
     };
 
 		addTaskLocal(newTask);
-		if (user) { addTaskRemote(socket, newTask); }
+		if (session) { addTaskRemote(socket, newTask); }
 
     navigate('/');
 	};
@@ -105,4 +105,4 @@ function NewTask() {
 	);
 };
 
-export default NewTask;
+export default AddTask;

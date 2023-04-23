@@ -27,15 +27,3 @@ export class TaskList {
     this.owner_id = owner;
   };
 };
-
-export class User {
-  _id: string;
-  buddy_code: string;
-  progress: number;
-
-  constructor(_id?: string) {
-    this._id = _id || "";
-    this.buddy_code = "";
-    this.progress = 0.0;
-  }
-}

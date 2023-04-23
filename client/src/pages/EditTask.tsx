@@ -9,7 +9,7 @@ import { socket } from '../socket';
 
 function EditTask() {
 	const navigate = useNavigate();
-	const { user } = useAuth();
+	const { session } = useAuth();
 	const { updateTaskLocal, selectedTask } = useLocalList();
 
 	const [body, setBody] = useState<string>(selectedTask.body);
@@ -31,7 +31,7 @@ function EditTask() {
     };
 
 		updateTaskLocal(newTask);
-		if (user) { updateTaskRemote(socket, newTask); }
+		if (session) { updateTaskRemote(socket, newTask); }
 
     navigate('/');
 	};
