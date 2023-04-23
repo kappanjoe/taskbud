@@ -9,15 +9,16 @@
 }
 
 .progress-bar-wrapper {
-  height: 8pt;
+  height: 4pt;
   background-color: antiquewhite;
-  border-radius: 8pt;
+  border-radius: 4pt;
 }
 
 .progress-bar-meter {
-  height: 8pt;
+  height: 4pt;
   background-color: lightgreen;
-  border-radius: 8pt;
+  border-radius: 4pt;
+  transition: width 1s ease-out;
 }
 
 .buddy {

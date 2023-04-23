@@ -1,51 +1,60 @@
 .task-container {
+  width: 100%;
+}
+
+.task-wrapper {
   display: flex;
   flex-direction: row;
-  align-items: flex-start;
-  margin: 5pt 50pt;
+  align-items: center;
+  margin: 5pt 35pt;
 }
 
 .task-content-wrapper {
   width: 100%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 .task-label {
   display: flex;
-  justify-content: flex-start;
+  flex-grow: 1;
 }
 
 .task-checkbox {
-  margin: 1pt 5pt 5pt -15pt;
+  margin: 4pt 8pt 5pt 0;
   padding: 2pt 4pt;
   border: 0;
   border-radius: 4pt;
   background-color:antiquewhite;
 }
 
-.task-button-wrapper {
+.task-icon-wrapper {
   width: max-content;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
-}
-
-.task-button-wrapper > button {
-  padding: 0 2pt;
-  margin: 2pt;
-}
-
-.detail {
-  display: flex;
-  align-content: center;
-  margin-bottom: 2pt;
+  align-items: center;
+  margin-right: 0;
 }
 
 .icon {
   width: 10pt;
   color: tan;
-  margin-right: 3pt;
+  margin: 0 4pt 4pt;
+}
+
+.small {
+  width: 8pt;
+  color: tan;
+  margin: 0 4pt;
+}
+
+.task-detail-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 5pt 35pt;
 }
 
 .button-icon {
@@ -58,4 +67,8 @@
   width: 10pt;
   color: salmon;
   margin: 3pt;
+}
+
+.extra-margin {
+  margin-left: 4pt;
 }

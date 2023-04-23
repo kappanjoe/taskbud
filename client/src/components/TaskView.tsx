@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { updateTaskRemote } from '../controllers';
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
@@ -7,20 +6,20 @@ import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 
 import './TaskView.css';
-import { DocumentTextIcon, CalendarIcon, FlagIcon, TrashIcon, PencilSquareIcon } from '@heroicons/react/20/solid';
+import { DocumentTextIcon, CalendarIcon, FlagIcon } from '@heroicons/react/20/solid';
+import TaskDetailView from './TaskDetailView';
 
 
 function TaskView(props: { task: Task }) {
-  const { body, completed, memo, start, due } = props.task;
+  const { _id, body, completed, memo, start, due } = props.task;
   const { updateTaskLocal, setSelectedTask } = useLocalList();
-  const navigate = useNavigate();
   const { session } = useAuth();
   const { socket } = useSocket();
 
   const [isCompleted, setIsCompleted] = useState(completed);
+  const [isOpen, setIsOpen] = useState(false);
 
   const handleCheckChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-
     let newCompleted = !isCompleted;
     setIsCompleted(newCompleted);
     
@@ -30,58 +29,35 @@ function TaskView(props: { task: Task }) {
     updateTaskLocal(newTask);
     if (session) { updateTaskRemote(socket, newTask); }
   };
+
+  const handleTaskClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsOpen(!isOpen);
+  };
   
   return (
     <div className="task-container">
-      <div className="task-content-wrapper">
-        <label className="task-label">
+      <div className="task-wrapper">
+        <div className="task-content-wrapper">
           <input
-            className="task-checkbox"
-            type="checkbox"
-            checked={isCompleted}
-            onChange={handleCheckChange}
-            />
-          { body }
-        </label>
-        {
-          memo !== "" &&
-            <p className="task-memo detail">
-              <DocumentTextIcon className="task-memo icon"/>
-              { memo }
-            </p>
-        }
-        {
-          start && 
-            <p className="task-start detail">
-              <CalendarIcon className="task-start icon"/>
-              { new Date(start).toLocaleDateString() }
-            </p>
-        }
-        {
-          due &&
-            <p className="task-due detail">
-              <FlagIcon className="task-due icon"/>
-              { new Date(due).toLocaleDateString() }
-            </p>
-        }
+              className="task-checkbox"
+              name={`checkbox-${_id}`}
+              type="checkbox"
+              checked={isCompleted}
+              onChange={handleCheckChange}
+              />
+          <label className="task-label" onClick={handleTaskClick} htmlFor={`checkbox-${_id}`}>
+            { body }
+          </label>
+        </div>
+        <div className="task-icon-wrapper">
+          { memo !== "" && <DocumentTextIcon className="task-memo icon"/> }
+          { start && <CalendarIcon className="task-start icon"/> }
+          { due && <FlagIcon className="task-due icon"/> }
+        </div>
       </div>
-      <div className="task-button-wrapper">
-        <button
-          className="button-primary"
-          onClick={() => {
-            setSelectedTask(props.task);
-            navigate('/edit-task');
-          }}>
-          <PencilSquareIcon className="button-icon"/>
-        </button>
-        <button
-          className="button-destructive"
-          onClick={() => {
-            setSelectedTask(props.task);
-            navigate('/delete-task');
-          }}>
-          <TrashIcon className="delete button-icon-destructive"/>
-        </button>
+      <div>
+        { isOpen && <TaskDetailView task={props.task} setSelectedTask={setSelectedTask}/> }
       </div>
     </div>
   )
