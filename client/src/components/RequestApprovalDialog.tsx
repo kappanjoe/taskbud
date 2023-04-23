@@ -1,14 +1,18 @@
 import React from 'react';
 import { useSocket } from '../contexts/Socket';
 
+import './Dialog.css';
+
 function RequestApprovalDialog() {
   const { handleBuddyApproval, requestRecvd, buddy } = useSocket();
 
   return (
-    <dialog className="buddy-request-dialog" open={requestRecvd}>
-      <p>User { buddy } is trying to hold you accountable!</p>
-      <button onClick={() => handleBuddyApproval(false)}>Deny</button>
-      <button onClick={() => handleBuddyApproval(true)}>Approve</button>
+    <dialog className="dialog-modal-wrapper" open={requestRecvd}>
+      <div className="dialog-container">
+        <h3 className="dialog-header">{ buddy || "User" } wants you to hold them accountable!</h3>
+        <button className="button-destructive" onClick={() => handleBuddyApproval(false)}>Deny</button>
+        <button className="button-primary" onClick={() => handleBuddyApproval(true)}>Approve</button>
+      </div>
     </dialog>
   );
 };
