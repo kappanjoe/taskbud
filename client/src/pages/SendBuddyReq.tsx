@@ -31,6 +31,7 @@ function SendBuddyReq() {
 
 	return (
 		<div className="form-container">
+			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Connect with your Buddy</h1>
 				<label className="form-label"> {/* TODO: display personal buddy code */}
