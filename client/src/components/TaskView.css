@@ -50,11 +50,15 @@
   margin: 0 4pt;
 }
 
-.task-detail-wrapper {
+.task-detail-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   margin: 5pt 35pt;
+}
+
+.task-detail-wrapper {
+  text-align: left;
 }
 
 .button-icon {
@@ -63,10 +67,8 @@
   margin: 3pt;
 }
 
-.button-icon-destructive {
-  width: 10pt;
+.destructive {
   color: salmon;
-  margin: 3pt;
 }
 
 .extra-margin {

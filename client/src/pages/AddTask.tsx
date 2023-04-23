@@ -49,7 +49,7 @@ function AddTask() {
 				<label className="form-label">
 					<input
 						className="input-task"
-						id="newtask-body"
+						id="addtask-body"
 						type="text"
 						placeholder='Do the task'
 						value={body}
@@ -64,7 +64,7 @@ function AddTask() {
 					Memo:
 					<input
 						className="input-text"
-						id="newtask-memo"
+						id="addtask-memo"
 						type="text"
             placeholder='(Optional)'
 						value={memo}
@@ -78,7 +78,7 @@ function AddTask() {
 					Start date:
 					<input
 						className="input-date"
-						id="newtask-start"
+						id="addtask-start"
 						type="date"
 						value={start}
 						onChange={(e) => {
