@@ -16,6 +16,19 @@ const io = new Server(PORT, {
 
 io.use(setupUser);
 
+const calcProgress = (tasks: Array<{completed: boolean}>) => {
+	let allTasksCt = 0;
+	let completedCt = 0;
+
+	tasks.forEach((task) => {
+		allTasksCt++;
+		if (task.completed) { completedCt++; }
+	});
+
+	return completedCt / allTasksCt || 0.0;
+};
+
+
 io.on('connection', (socket) => {
 	const userId = socket.handshake.auth.userId;
 	const userBuddyCode = socket.data.buddyCode;
@@ -44,9 +57,8 @@ io.on('connection', (socket) => {
 	socket.on('addTask', async (task: Document, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
-			const oldList = await client
-				.db(process.env.MONGO_DB_NAME)
-				.collection('task-lists')	
+			const db = client.db(process.env.MONGO_DB_NAME);
+			const oldList = await db.collection('task-lists')	
 				.findOne(
 						{ owner_id: userId }
 					);
@@ -60,14 +72,20 @@ io.on('connection', (socket) => {
 					tasks: oldList.tasks.concat(task)
 				};
 
-				const response = await client
-					.db(process.env.MONGO_DB_NAME)
-					.collection('task-lists')
+				const response = await db.collection('task-lists')
 					.findOneAndReplace(
-							{ _id: oldList._id },
-							newList,
-							{ returnDocument: "after" }
-						);
+						{ _id: oldList._id },
+						newList,
+						{ returnDocument: "after" }
+					);
+
+				const progress = calcProgress(newList.tasks);
+				await db.collection('users')
+					.findOneAndUpdate(
+            { _id: userId },
+            { $set: { progress: progress } }
+          );
+
 				console.log("Task added.");
 				cb(response.value);
 			} else {
@@ -83,9 +101,8 @@ io.on('connection', (socket) => {
 	socket.on('updateTask', async (task: Document, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
-			const oldList = await client
-				.db(process.env.MONGO_DB_NAME)
-				.collection('task-lists')	
+      const db = client.db(process.env.MONGO_DB_NAME);
+			const oldList = await db.collection('task-lists')	
 				.findOne({ owner_id: userId });
 
 			let newList: Document;
@@ -101,14 +118,20 @@ io.on('connection', (socket) => {
 						})
 				};
 
-				const response = await client
-					.db(process.env.MONGO_DB_NAME)
-					.collection('task-lists')
+				const response = await db.collection('task-lists')
 					.findOneAndReplace(
-							{ _id: oldList._id },
-							newList,
-							{ returnDocument: "after" }
-						);
+            { _id: oldList._id },
+            newList,
+            { returnDocument: "after" }
+          );
+
+        const progress = calcProgress(newList.tasks);
+				await db.collection('users')
+					.findOneAndUpdate(
+            { _id: userId },
+            { $set: { progress: progress } }
+          );
+
 				console.log("Task updated.");
 				cb(response.value);
 			} else {
@@ -124,9 +147,8 @@ io.on('connection', (socket) => {
 	socket.on('deleteTask', async (taskId: string, cb: (taskList: any) => void) => {
 		try {
 			await client.connect();
-			const oldList = await client
-				.db(process.env.MONGO_DB_NAME)
-				.collection('task-lists')	
+      const db = client.db(process.env.MONGO_DB_NAME);
+			const oldList = await db.collection('task-lists')	
 				.findOne({ owner_id: userId });
 
 			let newList: Document;
@@ -140,14 +162,20 @@ io.on('connection', (socket) => {
 						})
 				};
 
-				const response = await client
-					.db(process.env.MONGO_DB_NAME)
-					.collection('task-lists')
+				const response = await db.collection('task-lists')
 					.findOneAndReplace(
-							{ _id: oldList._id },
-							newList,
-							{ returnDocument: "after" }
-						);
+            { _id: oldList._id },
+            newList,
+            { returnDocument: "after" }
+          );
+
+        const progress = calcProgress(newList.tasks);
+        await db.collection('users')
+          .findOneAndUpdate(
+            { _id: userId },
+            { $set: { progress: progress } }
+          );
+
 				console.log("Task updated.");
 				cb(response.value);
 			} else {
@@ -173,7 +201,7 @@ io.on('connection', (socket) => {
 			const buddy = await collection.findOne({ buddy_code: userBuddy });
 			
 			if (buddy) {
-				cb(buddy.buddy_code, buddy.progress);
+				cb(buddy.buddy_code, Number(buddy.progress));
 			} else {
 				throw new Error('Could not fetch buddy from database.');
 			}

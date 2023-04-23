@@ -47,9 +47,7 @@ export const SocketContextProvider = ({ children }: Props) => {
     function onConnect() {
       setIsConnected(true);
 
-      if (isPaired) {
-        socket.volatile.emit('getBuddyProgress', handleBuddyUpdate);
-      }
+      socket.volatile.emit('getBuddyProgress', handleBuddyUpdate);
 
       console.log("Connected to socket.");
     };
@@ -60,7 +58,7 @@ export const SocketContextProvider = ({ children }: Props) => {
     };
 
     if (user) {
-      socket.auth = { userId: user.id, progress: String(0.0) };
+      socket.auth = { userId: user.id };
       socket.connect();
     }
 
