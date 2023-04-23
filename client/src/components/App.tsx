@@ -5,6 +5,8 @@ import { AuthContextProvider } from '../contexts/Auth';
 import { LocalListContextProvider } from '../contexts/LocalList';
 import { SocketContextProvider } from '../contexts/Socket';
 
+import PrivateRoute from './PrivateRoute';
+
 import BuddyReqView from '../pages/BuddyReqView';
 import DeleteTask from '../pages/DeleteTask';
 import EditTask from '../pages/EditTask';
@@ -22,13 +24,17 @@ function App() {
         <SocketContextProvider>
             <LocalListContextProvider>
               <Routes>
-                <Route path="/" element={ <Home/> } />
+                <Route path="/" element={ <PrivateRoute/> }>
+                  <Route path="/" element= { <Home/> }/>
+                </Route>
+                <Route path="/request-buddy" element={ <PrivateRoute/> }>
+                  <Route path="/request-buddy" element= { <BuddyReqView/> }/>
+                </Route>
                 <Route path="/signup" element={ <SignUp/> } />
                 <Route path="/login" element={ <LogIn/> } />
                 <Route path="/add-task" element={ <NewTask/> } />
                 <Route path="/edit-task" element={ <EditTask/> } />
                 <Route path="/delete-task" element={ <DeleteTask/> } />
-                <Route path="/request-buddy" element={ <BuddyReqView/> } />
               </Routes>
             </LocalListContextProvider>
         </SocketContextProvider>

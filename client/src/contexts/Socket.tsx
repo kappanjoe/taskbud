@@ -9,6 +9,7 @@ const SocketContext = createContext<SocketIOContext & AccountabilityContext>({
   isConnected: false,
   requestRecvd: false,
   handleBuddyApproval: () => {},
+  handleBuddyUpdate: () => {},
   isPaired: false,
   buddy: "",
   buddyProgress: 0.0
@@ -46,9 +47,6 @@ export const SocketContextProvider = ({ children }: Props) => {
   useEffect(() => {
     function onConnect() {
       setIsConnected(true);
-
-      socket.volatile.emit('getBuddyProgress', handleBuddyUpdate);
-
       console.log("Connected to socket.");
     };
 
@@ -76,7 +74,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, session, buddy]);
 
-	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress }} >
+	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, handleBuddyUpdate, isPaired, buddy, buddyProgress }} >
 		{ children }
 	</SocketContext.Provider>
 };
