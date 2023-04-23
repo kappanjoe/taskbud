@@ -56,7 +56,6 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
     return next(err);
   } finally {
     await client.close();
-
   }
   
 };

@@ -1,19 +1,12 @@
-import React, { ReactNode } from 'react';
-import { Navigate, Route } from 'react-router-dom';
+import React from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
 
-type Props = {
-	children: ReactNode,
-};
-
-const PrivateRoute = ({ children }: Props) => {
+const PrivateRoute = () => {
 	const { user } = useAuth();
 
-	if (!user) {
-		return <Navigate to='/' />;
-	}
-	return children;
+	return user ? <Outlet /> : <Navigate to='/signup' />;
 
 };
 
