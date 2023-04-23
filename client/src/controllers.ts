@@ -27,7 +27,7 @@ export const addTaskRemote = (socket: Socket, task: Task) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
-    console.warn('User task list could not be updated remotely.');
+    console.warn('Task could not be added remotely.');
   }
 };
 
@@ -37,7 +37,7 @@ export const updateTaskRemote = (socket: Socket, task: Task) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
-    console.warn('User task list could not be updated remotely.');
+    console.warn('Task could not be updated remotely.');
   }
 };
 
@@ -47,7 +47,7 @@ export const deleteTaskRemote = (socket: Socket, taskId: string) => {
       console.log('User task list updated remotely.', taskList);
     });
   } catch {
-    console.warn('User task list could not be updated remotely.');
+    console.warn('Task could not be deleted remotely.');
   }
 };
 
