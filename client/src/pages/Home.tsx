@@ -15,13 +15,8 @@ function Home() {
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
-		try {
-			auth.signOut();
-			socket.disconnect();
-			clearTaskListLocal();
-		} catch (err) {
-			console.error(err);
-		}
+		socket.disconnect();
+		auth.signOut().then(() => clearTaskListLocal());
 	};
 
 	return (
@@ -30,14 +25,9 @@ function Home() {
 			<h1 className="home-header">task bud</h1>
 			<div className="home-header-user-container">
 				{ session && <p className="home-username">Current user: {session.user.email}</p> }
-				{
-					session
-						? <button className="button-primary" onClick={handleLogout}>Log Out</button>
-						: <button className="button-primary" onClick={() => navigate('/login')}>Log In</button>
-				}
+				{ session && <button className="button-primary" onClick={handleLogout}>Log Out</button> }
 			</div>
 			<TaskListView taskList={ taskList } />
-			<button className="button-primary" onClick={() => navigate('/request-buddy')}>Request Buddy</button>
 			<button className="button-primary" onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)
