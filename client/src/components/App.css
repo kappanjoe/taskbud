@@ -1,18 +1,18 @@
 .App {
-  height: 100vh;
   text-align: center;
 }
 
 .button-primary {
-  padding: 2pt 4pt;
+  padding: 4pt 8pt;
   border: 0;
   border-radius: 4pt;
   background-color:antiquewhite;
+  color: black;
   margin: 2pt;
 }
 
 .button-destructive {
-  padding: 2pt 4pt;
+  padding: 4pt 8pt;
   border: 0;
   border-radius: 4pt;
   background-color:rgb(234, 210, 210);

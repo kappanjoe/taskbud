@@ -44,6 +44,7 @@ function EditTask() {
 				<h1 className="form-header">Edit task:</h1>
 				<label className="form-label">
 					<input
+						className="input-task"
 						id="edittask-body"
 						type="text"
 						value={body}
@@ -57,6 +58,7 @@ function EditTask() {
 				<label className="form-label">
 					Memo:
 					<input
+						className="input-text"
 						id="edittask-memo"
 						type="text"
             placeholder='(Optional)'
@@ -70,6 +72,7 @@ function EditTask() {
         <label className="form-label"> 
 					Start date:
 					<input
+						className="input-date"
 						id="edittask-start"
 						type="date"
 						value={start}
@@ -82,6 +85,7 @@ function EditTask() {
         <label className="form-label">
 					Due date:
 					<input
+						className="input-date"
 						id="edittask-due"
 						type="date"
 						value={due}

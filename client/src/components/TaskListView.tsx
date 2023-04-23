@@ -1,10 +1,10 @@
 import React from 'react';
-import ProgressView from './ProgressView';
 import TaskView from './TaskView';
-import { Task, TaskList } from '../types/classes';
+import { useLocalList } from '../contexts/LocalList';
+import { Task } from '../types/classes';
 
-function TaskListView(props: { taskList: TaskList }) {
-  const { taskList } = props;
+function TaskListView() {
+  const { taskList } = useLocalList();
   
   return (
     <div>
@@ -13,7 +13,6 @@ function TaskListView(props: { taskList: TaskList }) {
           return <TaskView task={ task } key={task._id} />
         })
       }
-      { (taskList.tasks.length > 0) && <ProgressView/> }
     </div>
   );
 };
