@@ -8,12 +8,12 @@
   width: calc(100% - 100pt);
   display: flex;
   flex-direction: column;
-  margin: 5pt 50pt;
+  margin: 5pt 50pt 30pt;
 }
 
 .form-header {
-  display: flex;
-  justify-content: flex-start;
+  text-align: center;
+  margin: 80pt 0 10pt;
 }
 
 .form-label {

@@ -28,12 +28,12 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const { session } = useAuth();
 	const { socket, isConnected, handleBuddyUpdate } = useSocket();
 
-	useEffect(() => {
-		const localList = localStorage.getItem('localList');
-		if (localList !== null) {
-			setTaskList(JSON.parse(localList));
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const localList = localStorage.getItem('localList');
+	// 	if (localList !== null) {
+	// 		setTaskList(JSON.parse(localList));
+	// 	}
+	// }, []);
 
 	useEffect(() => {
 		if (session && isConnected) {

@@ -1,5 +1,4 @@
 import React from 'react'
-import './ProgressBar.css';
 
 interface Props {
   completed: number;

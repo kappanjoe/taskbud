@@ -4,14 +4,16 @@ import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import RequestApprovalDialog from '../components/RequestApprovalDialog';
+import ProgressView from '../components/ProgressView';
 import TaskListView from '../components/TaskListView';
 
 import './Home.css';
+import { ArrowPathIcon } from '@heroicons/react/20/solid';
 
 function Home() {
 	const { auth, session } = useAuth();
 	const { socket } = useSocket();
-	const { taskList, clearTaskListLocal } = useLocalList();
+	const { clearTaskListLocal } = useLocalList();
 	const navigate = useNavigate();
 
 	const handleLogout = async () => {
@@ -22,13 +24,14 @@ function Home() {
 	return (
 		<div className="home-container">
 			{ <RequestApprovalDialog/> }
-			<h1 className="home-header">task bud</h1>
-			<div className="home-header-user-container">
-				{ session && <p className="home-username">Current user: {session.user.email}</p> }
+			<div className="home-navbar">
 				{ session && <button className="button-primary" onClick={handleLogout}>Log Out</button> }
+				<h1 className="home-header">task bud</h1>
+				<ArrowPathIcon className="refresh nav-icon" onClick={() => window.location.reload()} />
 			</div>
-			<TaskListView taskList={ taskList } />
-			<button className="button-primary" onClick={() => navigate('/add-task')}>Add Task</button>
+			<ProgressView/>
+			<TaskListView/>
+			<button className="button-primary add-task-button" onClick={() => navigate('/add-task')}>Add Task</button>
 		</div>
 	)
 };
