@@ -14,9 +14,9 @@ function TaskDetailView({ task, setSelectedTask }: Props) {
   const { memo, start, due } = task;
   
   return (
-    <div className="task-detail-wrapper">
+    <div className="task-detail-container">
       
-      <div>
+      <div className="task-detail-wrapper">
         { memo !== "" && <h5>
             <DocumentTextIcon className="task-memo icon small"/>
             Memo: { memo }
@@ -49,7 +49,7 @@ function TaskDetailView({ task, setSelectedTask }: Props) {
             setSelectedTask(task);
             navigate('/delete-task');
           }}>
-          <TrashIcon className="delete button-icon-destructive"/>
+          <TrashIcon className="delete button-icon destructive"/>
         </button>
       </div>
 

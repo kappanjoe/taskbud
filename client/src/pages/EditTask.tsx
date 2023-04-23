@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import { Task } from '../types/classes';
 import { updateTaskRemote } from '../controllers';
-import { socket } from '../socket';
 
 function EditTask() {
 	const navigate = useNavigate();
 	const { session } = useAuth();
+	const { socket } = useSocket();
 	const { updateTaskLocal, selectedTask } = useLocalList();
 
 	const [body, setBody] = useState<string>(selectedTask.body);
@@ -37,15 +38,14 @@ function EditTask() {
 	};
 
 	return (
-		<div>
-			<button onClick={() => navigate('/')}>Go Back</button>
-			<form onSubmit={handleSubmit}>
-				<h1>Edit task:</h1>
-				<label>
+		<div className="form-container">
+			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<form className="form-wrapper" onSubmit={handleSubmit}>
+				<h1 className="form-header">Edit task:</h1>
+				<label className="form-label">
 					<input
-						id="newtask-body"
+						id="edittask-body"
 						type="text"
-						placeholder='Do the task'
 						value={body}
 						onChange={(e) => {
 							setBody(e.target.value)
@@ -54,10 +54,10 @@ function EditTask() {
 					/>
 				</label>
 				<br/>
-				<label>
+				<label className="form-label">
 					Memo:
 					<input
-						id="newtask-memo"
+						id="edittask-memo"
 						type="text"
             placeholder='(Optional)'
 						value={memo}
@@ -67,10 +67,10 @@ function EditTask() {
 					/>
 				</label>
 				<br/>
-        <label> 
+        <label className="form-label"> 
 					Start date:
 					<input
-						id="newtask-start"
+						id="edittask-start"
 						type="date"
 						value={start}
 						onChange={(e) => {
@@ -79,10 +79,10 @@ function EditTask() {
 					/>
 				</label>
 				<br/>
-        <label>
+        <label className="form-label">
 					Due date:
 					<input
-						id="newtask-due"
+						id="edittask-due"
 						type="date"
 						value={due}
 						onChange={(e) => {
@@ -91,7 +91,7 @@ function EditTask() {
 					/>
 				</label>
 				<br/>
-				<button type="submit">Save</button>
+				<button className="button-primary" type="submit">Save</button>
 			</form>
 		</div>
 	);
