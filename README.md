@@ -42,7 +42,7 @@ This repository is divided between [Server](/server) and [Client](/client) node.
 
 ### Usage
 
-1. Visit `https://localhost:3000` in your browser.
+1. Visit `https://localhost:3000` in your browser. (Setting your browser to responsive mode is strongly recommended - the app is currently designed for PWA installation.)
 
 2. Sign up with a new account (this will create a new user in Supabase).
 
