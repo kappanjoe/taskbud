@@ -3,6 +3,7 @@
 
 ---
 
+<img alt="An iPhone screen shot of the task bud task management web app. A progress bar is displayed for the user and an accountability buddy." src="https://user-images.githubusercontent.com/6261485/234029152-cb1d752b-edfe-430a-bfa5-a36c3b55278a.png" width=300 />
 
 
 ## How to Use (Local/Dev) 🧑🏻‍💻
