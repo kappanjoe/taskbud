@@ -17,7 +17,7 @@ function ProgressView() {
       { isPaired
         ? <ProgressBar completed={buddyProgress} isBuddy={true} />
         : <div className="request-buddy-wrapper">
-            <button className="button-primary" onClick={() => navigate('/request-buddy')}>Request Buddy</button>
+            <button className="button-primary" onClick={() => navigate('/request-buddy')}>Add Buddy</button>
           </div>
       }
     </div>

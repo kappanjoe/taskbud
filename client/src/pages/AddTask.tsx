@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { XCircleIcon } from '@heroicons/react/24/outline';
 
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
@@ -76,30 +77,37 @@ function AddTask() {
 					/>
 				</label>
 				<br/>
-        <label className="form-label"> 
-					Start date:
-					<input
-						className="input-date"
-						id="addtask-start"
-						type="date"
-						value={start}
-						onChange={(e) => {
-							setStart(e.target.value)
-						}}
-					/>
-				</label>
+				<div className="input-date-wrapper">
+					{ start !== "" && <XCircleIcon className="input-clear-date" onClick={() => setStart("")}/> }
+					<label className="form-label"> 
+						Start date:
+						<input
+							className="input-date"
+							id="addtask-start"
+							type="date"
+							value={start}
+							onChange={(e) => {
+								setStart(e.target.value)
+							}}
+						/>
+					</label>
+				</div>
 				<br/>
-        <label className="form-label">
-					Due date:
-					<input
-						className="input-date"
-						type="date"
-						value={due}
-						onChange={(e) => {
-							setDue(e.target.value)
-						}}
-					/>
-				</label>
+				<div className="input-date-wrapper">
+					{ due !== "" && <XCircleIcon className="input-clear-date" onClick={() => setDue("")}/> }
+					<label className="form-label">
+						Due date:
+						<input
+							className="input-date"
+							type="date"
+							value={due}
+							onChange={(e) => {
+								e.stopPropagation();
+								setDue(e.target.value);
+							}}
+							/>
+					</label>
+				</div>
 				<br/>
 				<button className="button-primary" type="submit">Add Task +</button>
 			</form>
