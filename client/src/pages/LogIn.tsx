@@ -26,6 +26,9 @@ function LogIn() {
 
 	return (
 		<div className="form-container">
+			<div className="home-navbar">
+				<h1 className="home-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Welcome Back!</h1>
 				<label className="form-label">
@@ -34,7 +37,7 @@ function LogIn() {
 						className="input-text"
 						id="login-email"
 						type="email"
-						placeholder='someone@somewhere.net'
+						placeholder='user@emailprovider.com'
 						autoComplete="username"
 						value={email}
 						onChange={(e) => {
@@ -49,6 +52,7 @@ function LogIn() {
 						className="input-text"
 						id="login-pw"
 						type="password"
+						placeholder="Your password"
 						value={password}
 						autoComplete="current-password"
 						onChange={(e) => {
@@ -60,7 +64,8 @@ function LogIn() {
 				<button className="button-primary" type="submit">Log In</button>
 			</form>
 			<p>
-				Need an account? <Link to="/signup">Click here to make one.</Link>
+				Need an account?<br/>
+				<Link to="/signup">Click here to sign up.</Link>
 			</p>
 		</div>
 	);

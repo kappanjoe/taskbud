@@ -10,6 +10,8 @@ export interface SupabaseContext {
 
 export interface SocketIOContext {
 	socket: Socket<ServerToClientEvents, ClientToServerEvents>;
+  username: string;
+  setUsername: Dispatch<SetStateAction<string>>;
   isConnected: boolean;
 };
 

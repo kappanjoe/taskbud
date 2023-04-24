@@ -6,7 +6,7 @@ require('dotenv').config();
 
 export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
   const userId = socket.handshake.auth.userId;
-  console.log(socket.handshake.auth);
+  const userName = socket.handshake.auth.username;
 
   try {
     if (userId) {
@@ -22,7 +22,7 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
 
         await collection.insertOne({
           _id: userId,
-          buddy_code: "333 333 333",
+          username: userName ?? "",
           progress: 0.0
         });
 
@@ -36,14 +36,14 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
 
       } else {
     
-        socket.data.buddyCode = user.buddy_code;
+        socket.data.userName = user.username;
 
         if (user.request_from) {
           socket.data.pendingReqFrom = user.request_from;
         }
         if (user.buddy) {
           socket.data.buddy = user.buddy;
-			    const buddy = await collection.findOne({ buddy_code: user.buddy });
+			    const buddy = await collection.findOne({ username: user.buddy });
           if (buddy) {
             socket.data.buddyProgress = buddy.progress;
           } else {

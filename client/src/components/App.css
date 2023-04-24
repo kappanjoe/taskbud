@@ -6,7 +6,9 @@
   padding: 4pt 8pt;
   border: 0;
   border-radius: 4pt;
-  background-color:antiquewhite;
+  font-size: large;
+  font-weight: 500;
+  background-color: antiquewhite;
   color: black;
   margin: 2pt;
 }
@@ -15,6 +17,9 @@
   padding: 4pt 8pt;
   border: 0;
   border-radius: 4pt;
-  background-color:rgb(234, 210, 210);
+  font-size: large;
+  font-weight: 500;
+  background-color: rgb(234, 210, 210);
+  color: black;
   margin: 2pt;
 }

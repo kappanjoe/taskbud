@@ -1,44 +1,86 @@
 .form-container {
   display: flex;
   flex-direction: column;
+  text-align: left;
   align-items: center;
+}
+
+.form-navbar {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar-header {
+  font-weight: 500;
+  font-style: italic;
+  padding: 5pt;
+  margin: auto;
+}
+
+.button-nav {
+  position: absolute;
+  border: 0;
+  border-radius: 4pt;
+  font-size: large;
+  font-weight: 500;
+  background-color: antiquewhite;
+  color: black;
+  padding: 4pt 8pt;
+  left: 15pt;
 }
 
 .form-wrapper {
   width: calc(100% - 100pt);
   display: flex;
   flex-direction: column;
+  align-items: center;
   margin: 5pt 50pt 30pt;
 }
 
 .form-header {
   text-align: center;
-  margin: 80pt 0 10pt;
+  font-weight: 400;
+  margin: 50pt 0 10pt;
+}
+
+.form-subheader {
+  text-align: center;
+  font-weight: 100;
+  margin: 10pt 0;
 }
 
 .form-label {
+  width: 100%;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
 }
 
-input {
-  padding: 2pt 4pt;
+.form-detail {
+  width: 100%;
+  margin-bottom: 6pt;
+}
+
+.detail-header {
+  font-weight: 400;
+  margin-right: 6pt;
+}
+
+input, textarea {
+  font-size: large;
   border: 0;
   border-radius: 4pt;
   background-color:antiquewhite;
+  resize: none;
+  padding: 4pt 8pt;
+  margin: 2pt 0;
 }
 
 .input-task {
-  width: 100%;
-}
-
-.input-text {
-
-}
-
-.input-date {
-
+  height: 40pt;
+  word-wrap: normal;
 }
 
 .buddy-code-input {

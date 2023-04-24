@@ -18,6 +18,10 @@
   color: wheat;
 }
 
+.logout {
+  transform: rotate(180deg);
+}
+
 .add-task-button {
   position: absolute;
   right: calc(env(safe-area-inset-right) + 20pt);

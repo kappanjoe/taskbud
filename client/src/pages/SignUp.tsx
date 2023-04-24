@@ -3,7 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
-import { useLocalList } from '../contexts/LocalList';
 
 import './Form.css';
 
@@ -14,13 +13,12 @@ function SignUp() {
 	const [password, setPassword] = useState('');
 
 	const { auth } = useAuth();
-	const { socket } = useSocket();
-	const { listProgress } = useLocalList();
+	const { username, setUsername } = useSocket();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 
-		const { data, error } = await auth.signUp({ email, password });
+		const { error } = await auth.signUp({ email, password });
 
 		if (error) {
 			console.error(error);
@@ -31,19 +29,37 @@ function SignUp() {
 
 	return (
 		<div className="form-container">
+			<div className="home-navbar">
+				<h1 className="home-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
-				<h1 className="form-header">Create an Account:</h1>
+				<h1 className="form-header">Create Account:</h1>
 				<label className="form-label">
 					Email
 					<input
 						className="input-text"
 						id="signup-email"
 						type="email"
-						placeholder='someone@somewhere.net'
+						placeholder="user@emailprovider.com"
 						autoComplete="username"
 						value={email}
 						onChange={(e) => {
-							setEmail(e.target.value)
+							setEmail(e.target.value.toLowerCase())
+						}}
+					/>
+				</label>
+				<br/>
+				<label className="form-label">
+					Username
+					<input
+						className="input-text"
+						id="signup-username"
+						type="text"
+						placeholder="Pick a username"
+						autoComplete="nickname"
+						value={username}
+						onChange={(e) => {
+							setUsername(e.target.value)
 						}}
 					/>
 				</label>
@@ -54,6 +70,7 @@ function SignUp() {
 						className="input-text"
 						id="signup-pw"
 						type="password"
+						placeholder="Pick a memorable password"
 						autoComplete="new-password"
 						value={password}
 						onChange={(e) => {
@@ -65,7 +82,8 @@ function SignUp() {
 				<button className="button-primary" type="submit">Sign Up</button>
 			</form>
 			<p>
-				Already have an account? <Link to="/login">Click here to log in.</Link>
+				Already have an account?<br/>
+				<Link to="/login">Click here to log in.</Link>
 			</p>
 		</div>
 	);
