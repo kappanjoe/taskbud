@@ -51,6 +51,18 @@
   margin: 10pt 0;
 }
 
+.input-date-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+}
+
+.input-clear-date {
+  width: 16pt;
+  padding-right: 4pt;
+  margin: 1pt 0 0 -20pt;
+}
+
 .form-label {
   width: 100%;
   display: flex;

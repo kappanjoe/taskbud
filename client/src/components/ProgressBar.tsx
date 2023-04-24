@@ -7,7 +7,7 @@ interface Props {
 }
 
 function ProgressBar({ completed, isBuddy }: Props) {
-  const { buddy } = useSocket();
+  const { buddy, username } = useSocket();
   const [isPending, setIsPending] = useState(true);
   const percent: string = (completed * 100).toFixed(0);
 
@@ -22,7 +22,7 @@ function ProgressBar({ completed, isBuddy }: Props) {
   return (
     <div className="progress-bar-container">
       <h5 className="progress-bar-header">
-        { isBuddy ? `${buddy}'s Progress` : "Your Progress" }
+        { isBuddy ? `${buddy}'s Progress` : `Your Progress${username && ` (${username})` }` }
         { `: ${percent}%` }
       </h5>
       <div className="progress-bar-wrapper">
