@@ -20,6 +20,7 @@
 .task-label {
   display: flex;
   flex-grow: 1;
+  text-align: left;
 }
 
 .task-checkbox {
@@ -41,7 +42,7 @@
 .icon {
   width: 10pt;
   color: tan;
-  margin: 0 4pt 4pt;
+  margin: 4pt;
 }
 
 .small {
@@ -61,16 +62,17 @@
   text-align: left;
 }
 
+.detail-header {
+  font-weight: 400;
+  margin-right: 4pt;
+}
+
 .button-icon {
-  width: 10pt;
+  width: 12pt;
   color: peru;
-  margin: 3pt;
+  margin: 1pt 0 0;
 }
 
 .destructive {
-  color: salmon;
-}
-
-.extra-margin {
-  margin-left: 4pt;
+  color: crimson;
 }

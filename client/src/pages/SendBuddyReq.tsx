@@ -8,13 +8,11 @@ import './Form.css';
 function SendBuddyReq() {
   const navigate = useNavigate();
 
-  const { socket } = useSocket();
+  const { socket, username } = useSocket();
 
   const [successful, setSuccessful] = useState(false);
   const [failed, setFailed] = useState(false);
-	const [code1, setCode1] = useState('');
-  const [code2, setCode2] = useState('');
-  const [code3, setCode3] = useState('');
+	const [buddyName, setBuddyName] = useState('');
 
   useEffect(() => {
     if (successful || failed) {
@@ -25,56 +23,28 @@ function SendBuddyReq() {
 
 	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
-    sendBuddyRequest(socket, [code1, code2, code3].join(' '), setSuccessful, setFailed);
+    sendBuddyRequest(socket, buddyName, setSuccessful, setFailed);
 	};
 
 	return (
 		<div className="form-container">
-			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<div className="form-navbar">
+				<button className="button-nav" onClick={() => navigate('/')}>Go Back</button>
+				<h1 className="navbar-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Connect with your Buddy</h1>
-				<label className="form-label"> {/* TODO: display personal buddy code */}
-					Buddy's Code: 
+				<h3 className="form-subheader">Your username: {username}</h3>
+				<label className="form-label">
+					Buddy's Username: 
 					<input
-						className="buddy-code-input"
-            name="buddy-code-1"
+						className="input-text"
+            name="buddy-username"
 						type="text"
-            inputMode="numeric"
-						placeholder='000'
-						autoComplete="off"
-            pattern="[0-9]{3}"
-						value={code1}
+						placeholder="Your buddy's username"
+						value={buddyName}
 						onChange={(e) => {
-							setCode1(e.target.value)
-						}}
-            required
-					/>
-          <input
-						className="buddy-code-input"
-            name="buddy-code-2"
-						type="text"
-            inputMode="numeric"
-						placeholder='000'
-						autoComplete="off"
-            pattern="[0-9]{3}"
-						value={code2}
-						onChange={(e) => {
-							setCode2(e.target.value)
-						}}
-            required
-					/>
-          <input
-						className="buddy-code-input"
-            name="buddy-code-3"
-						type="text"
-            inputMode="numeric"
-						placeholder='000'
-						autoComplete="off"
-            pattern="[0-9]{3}"
-						value={code3}
-						onChange={(e) => {
-							setCode3(e.target.value)
+							setBuddyName(e.target.value.toLowerCase())
 						}}
             required
 					/>

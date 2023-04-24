@@ -19,24 +19,24 @@ function TaskDetailView({ task, setSelectedTask }: Props) {
       <div className="task-detail-wrapper">
         { memo !== "" && <h5>
             <DocumentTextIcon className="task-memo icon small"/>
-            Memo: { memo }
+            <span className="detail-header">Memo: </span>{ memo }
           </h5>
         }
         { start && <h5>
             <CalendarIcon className="task-start icon small"/>
-            Start: { new Date(start).toLocaleDateString() }
+            <span className="detail-header">Start: </span>{ new Date(start).toLocaleDateString() }
           </h5>
         }
         { due && <h5>
             <FlagIcon className="task-due icon small"/>
-            Due: { new Date(due).toLocaleDateString() }
+            <span className="detail-header">Due: </span>{ new Date(due).toLocaleDateString() }
           </h5>
         }
       </div>
 
       <div>
         <button
-          className="button-primary extra-margin"
+          className="button-primary"
           onClick={() => {
             setSelectedTask(task);
             navigate('/edit-task');
@@ -44,7 +44,7 @@ function TaskDetailView({ task, setSelectedTask }: Props) {
           <PencilSquareIcon className="button-icon"/>
         </button>
         <button
-          className="button-destructive extra-margin"
+          className="button-destructive"
           onClick={() => {
             setSelectedTask(task);
             navigate('/delete-task');

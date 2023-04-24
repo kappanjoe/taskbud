@@ -43,15 +43,17 @@ function AddTask() {
 
 	return (
 		<div className="form-container">
-			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<div className="form-navbar">
+				<button className="button-nav" onClick={() => navigate('/')}>Go Back</button>
+				<h1 className="navbar-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Add a new task:</h1>
 				<label className="form-label">
-					<input
+					<textarea
 						className="input-task"
 						id="addtask-body"
-						type="text"
-						placeholder='Do the task'
+						placeholder='Write your task here'
 						value={body}
 						onChange={(e) => {
 							setBody(e.target.value)
@@ -99,7 +101,7 @@ function AddTask() {
 					/>
 				</label>
 				<br/>
-				<button className="button-primary" type="submit">Add Task</button>
+				<button className="button-primary" type="submit">Add Task +</button>
 			</form>
 		</div>
 	);

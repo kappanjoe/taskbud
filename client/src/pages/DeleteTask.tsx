@@ -23,31 +23,34 @@ function DeleteTask() {
 
 	return (
 		<div className="form-container">
-			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<div className="form-navbar">
+				<button className="button-nav" onClick={() => navigate('/')}>Go Back</button>
+				<h1 className="navbar-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
-				<h1 className="form-header">Really delete task?</h1>
-				<p className="form-label" id="deletetask-body" >
+				<h1 className="form-header">Really delete?</h1>
+				<p className="form-detail" id="deletetask-body" >
 					{ selectedTask.body }
 				</p>
-				<p className="form-label" id="deletetask-memo" >
-					Completed: { selectedTask.completed ? "Yes" : "No" }
+				<p className="form-detail" id="deletetask-memo" >
+					<span className="detail-header">Completed: </span>{ selectedTask.completed ? "Yes" : "No" }
 				</p>
 				{
 					selectedTask.memo &&
-						<p className="form-label" id="deletetask-memo" >
-							Memo: { selectedTask.memo }
+						<p className="form-detail" id="deletetask-memo" >
+							<span className="detail-header">Memo: </span>{ selectedTask.memo }
 						</p>
 				}
         {
 					selectedTask.start &&
-						<p className="form-label" id="deletetask-start" >
-							Start: { selectedTask.start }
+						<p className="form-detail" id="deletetask-start" >
+							<span className="detail-header">Start: </span>{ selectedTask.start }
 						</p>
 				}
 				{
 					selectedTask.due &&
-						<p className="form-label" id="deletetask-due" >
-							Start: { selectedTask.due }
+						<p className="form-detail" id="deletetask-due" >
+							<span className="detail-header">Due: </span>{ selectedTask.due }
 						</p>
 				}
 				<br/>

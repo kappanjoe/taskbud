@@ -39,7 +39,10 @@ function EditTask() {
 
 	return (
 		<div className="form-container">
-			<button className="button-primary" onClick={() => navigate('/')}>Go Back</button>
+			<div className="form-navbar">
+				<button className="button-nav" onClick={() => navigate('/')}>Go Back</button>
+				<h1 className="navbar-header">task bud</h1>
+			</div>
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Edit task:</h1>
 				<label className="form-label">

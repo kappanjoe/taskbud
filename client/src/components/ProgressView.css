@@ -10,7 +10,7 @@
 .progress-bar-container {
   text-align: left;
   padding: 2pt 14pt;
-  margin: 2pt 0;
+  margin: 0 0 4pt;
 }
 
 .progress-bar-header {

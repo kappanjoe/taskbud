@@ -31,7 +31,7 @@ const calcProgress = (tasks: Array<{completed: boolean}>) => {
 
 io.on('connection', (socket) => {
 	const userId = socket.handshake.auth.userId;
-	const userBuddyCode = socket.data.buddyCode;
+	const userName = socket.data.userName;
 	let userBuddy = socket.data.buddy;
 
 	const sendProgressToBuddy = async (progress: number) => {
@@ -41,8 +41,8 @@ io.on('connection', (socket) => {
 
 		let sockets = await io.fetchSockets();
 		for (const otherSocket of sockets) {
-			if (otherSocket.data.buddyCode === userBuddy) {
-				io.volatile.to(otherSocket.id).emit('buddyUpdate', userBuddyCode, progress);
+			if (otherSocket.data.userName === userBuddy) {
+				io.to(otherSocket.id).emit('buddyUpdate', userBuddy, progress);
 				break;
 			}
 		}
@@ -53,6 +53,9 @@ io.on('connection', (socket) => {
 	}
 	if (socket.data.buddyProgress) {
 		socket.emit('buddyUpdate', userBuddy, socket.data.buddyProgress);
+	}
+	if (socket.data.userName) {
+		socket.emit('usernameUpdate', userName);
 	}
 
 	socket.on('getList', async (cb: (taskList: any) => void) => {
@@ -215,16 +218,15 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('sendBuddyRequest', async (buddyCode: string, cb: (err?: any) => void) => {
-		console.log(buddyCode, "pairing requested!");
+	socket.on('sendBuddyRequest', async (buddyName: string, cb: (err?: any) => void) => {
+
 		try {
 			await client.connect();
       const db = client.db(process.env.MONGO_DB_NAME);
       const collection = db.collection('users');
 
 			const user = await collection.findOne({ _id: userId });
-			const buddy = await collection.findOne({ buddy_code: buddyCode });
-			console.log(user, buddy, "attempting pairing");
+			const buddy = await collection.findOne({ username: buddyName });
 
 			if (!user) {
 				throw new Error('Could not fetch user from database.');
@@ -232,43 +234,43 @@ io.on('connection', (socket) => {
 			
 			if (buddy) { // If a buddy user was found...
 				if (buddy.request_from) { // If that buddy already has a request...
-					if (buddy.request_from === userBuddyCode) {
+					if (buddy.request_from === user.username) {
 						throw new Error('Request has already been sent.');
 					} else {
 						throw new Error('Recipient has a request already pending.');
 					}
 				}
 				
-				if (user.request_from === buddy.buddy_code) { // Assume approval if an inverse request exists
+				if (user.request_from === buddy.username) { // Assume approval if an inverse request exists
 					cb();
 					await collection.updateOne( // Set buddy for user
 						{ _id: userId },
 						{
-							$set: {buddy: buddy.buddy_code},
+							$set: {buddy: buddy.username},
 							$unset: { request_from: "" }
 						}
 					);
 	
 					await collection.updateOne( // Set user as buddy for buddy
 						{ _id: buddy._id },
-						{ $set: { buddy: user.buddy_code } }
+						{ $set: { buddy: user.username } }
 					);
 
 					// Update users with buddy's progress
 
-					socket.emit('buddyUpdate', buddy.buddy_code, buddy.progress);
+					socket.emit('buddyUpdate', buddy.username, buddy.progress);
 					sendProgressToBuddy(user.progress);
 				} else { // Save request and notify buddy now or on next login
 					cb();
 					await collection.updateOne(
 						{ _id: buddy._id },
-						{ $set: { request_from: userBuddyCode } }
+						{ $set: { request_from: userName } }
 					);
 
 					const sockets = await io.fetchSockets();
 					for (const otherSocket of sockets) { // Send a buddy request if they're online
-						if (otherSocket.data.buddyCode === buddy.buddy_code) {
-							io.volatile.to(otherSocket.id).emit('buddyRequest', userBuddyCode, (err: Error) => console.log(err));
+						if (otherSocket.data.userName === buddy.username) {
+							io.to(otherSocket.id).emit('buddyRequest', userName, (err: Error) => console.log(err));
 							break;
 						}
 					}
@@ -287,21 +289,21 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('approveRequest', async (buddyCode: string) => {
+	socket.on('approveRequest', async (buddyName: string) => {
 		try {
 			await client.connect();
 			const db = client.db(process.env.MONGO_DB_NAME);
 			const collection = db.collection('users');
 
 			const user = await collection.findOne({ _id: userId });
-			const buddy = await collection.findOne({ buddy_code: buddyCode });
+			const buddy = await collection.findOne({ username: buddyName });
 			
 			if (!user) {
 				throw new Error('Could not fetch user from database.');
 			}
 			
 			if (buddy) {
-				userBuddy = buddy.buddy_code;
+				userBuddy = buddy.username;
 				
 				await collection.updateOne( // Set buddy for user
 					{ _id: userId },
@@ -313,11 +315,11 @@ io.on('connection', (socket) => {
 
 				await collection.updateOne( // Set user as buddy for buddy
 					{ _id: buddy._id },
-					{ $set: { buddy: user.buddy_code } }
+					{ $set: { buddy: user.username } }
 				);
 
 				// send approval signal/progress report to user(s)
-				socket.emit('buddyUpdate', userBuddy, buddy.progress);
+				socket.emit('buddyUpdate', buddy.username, buddy.progress);
 				sendProgressToBuddy(user.progress);
 
 			} else {
@@ -331,19 +333,19 @@ io.on('connection', (socket) => {
 		}
 	});
 
-	socket.on('denyRequest', async (buddyCode: string) => {
+	socket.on('denyRequest', async (buddyName: string) => {
 		try {
 			await client.connect();
 			const db = client.db(process.env.MONGO_DB_NAME);
 			const collection = db.collection('users');
 
 			const user = await collection.findOne({ _id: userId });
-			// const buddy = await collection.findOne({ buddy_code: buddyCode });
+			// const buddy = await collection.findOne({ username: buddyName });
 			
 			if (!user) {
 				throw new Error('Could not fetch user from database.');
 			} else if (user.request_from) {
-				if (user.request_from !== buddyCode) {
+				if (user.request_from !== buddyName) {
 					throw new Error('Request expired.');
 				} else {
 					await collection.updateOne( // Remove pending_request for user
@@ -360,7 +362,7 @@ io.on('connection', (socket) => {
 
 				// await collection.updateOne( // Set user as buddy for buddy
 				// 	{ _id: buddy._id },
-				// 	{ $set: { buddy: user.buddy_code } }
+				// 	{ $set: { buddy: user.username } }
 				// );
 
 			// } else {
