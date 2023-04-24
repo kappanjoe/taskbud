@@ -47,10 +47,9 @@ function EditTask() {
 			<form className="form-wrapper" onSubmit={handleSubmit}>
 				<h1 className="form-header">Edit task:</h1>
 				<label className="form-label">
-					<input
+					<textarea
 						className="input-task"
 						id="edittask-body"
-						type="text"
 						value={body}
 						onChange={(e) => {
 							setBody(e.target.value)
