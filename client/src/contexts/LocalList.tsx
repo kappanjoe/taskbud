@@ -26,7 +26,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const [selectedTask, setSelectedTask] = useState<Task>(new Task());
 	const [listProgress, setListProgress] = useState<number>(0.0);
 	const { session } = useAuth();
-	const { socket, isConnected, handleBuddyUpdate } = useSocket();
+	const { socket, isConnected } = useSocket();
 
 	// useEffect(() => {
 	// 	const localList = localStorage.getItem('localList');
@@ -37,7 +37,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 
 	useEffect(() => {
 		if (session && isConnected) {
-			loadTaskList(socket, setTaskList, handleBuddyUpdate);
+			loadTaskList(socket, setTaskList);
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [session, isConnected]);

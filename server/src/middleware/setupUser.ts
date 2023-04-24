@@ -6,6 +6,7 @@ require('dotenv').config();
 
 export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
   const userId = socket.handshake.auth.userId;
+  console.log(socket.handshake.auth);
 
   try {
     if (userId) {
@@ -14,7 +15,6 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
 
       const db = client.db(process.env.MONGO_DB_NAME);
       const collection = db.collection('users');
-
 
       const user = await collection.findOne({ _id: userId });
 
@@ -43,6 +43,12 @@ export const setupUser = async (socket: Socket, next: (_?: Error) => any) => {
         }
         if (user.buddy) {
           socket.data.buddy = user.buddy;
+			    const buddy = await collection.findOne({ buddy_code: user.buddy });
+          if (buddy) {
+            socket.data.buddyProgress = buddy.progress;
+          } else {
+            throw new Error('Could not fetch buddy from database.');
+          }
         }
 
         return next();

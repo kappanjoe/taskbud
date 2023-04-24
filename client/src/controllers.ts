@@ -1,7 +1,7 @@
 import { Socket } from "socket.io-client";
 import { Task, TaskList } from "./types/classes";
 
-export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void, handleBuddyUpdate: (buddyName: string, buddyUpdate: number) => void) => {
+export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void) => {
   try {
     const localList = localStorage.getItem('localList');
     if (localList === null) {
@@ -10,13 +10,11 @@ export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetState
         setTaskList(taskList);
         localStorage.setItem('localList', JSON.stringify(taskList));
         console.log('Task list downloaded.');
-        socket.emit('getBuddyProgress', handleBuddyUpdate);
       });
     } else {
       let list = JSON.parse(localList);
       setTaskList(list);
       console.log('User task list loaded from localStorage.');
-      socket.emit('getBuddyProgress', handleBuddyUpdate);
     }
   } catch (err) {
     console.error(err);
