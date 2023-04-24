@@ -32,9 +32,27 @@ const calcProgress = (tasks: Array<{completed: boolean}>) => {
 io.on('connection', (socket) => {
 	const userId = socket.handshake.auth.userId;
 	const userBuddyCode = socket.data.buddyCode;
+	let userBuddy = socket.data.buddy;
+
+	const sendProgressToBuddy = async (progress: number) => {
+		if (!userBuddy) {
+			return;
+		}
+
+		let sockets = await io.fetchSockets();
+		for (const otherSocket of sockets) {
+			if (otherSocket.data.buddyCode === userBuddy) {
+				io.volatile.to(otherSocket.id).emit('buddyUpdate', userBuddyCode, progress);
+				break;
+			}
+		}
+	};
 
 	if (socket.data.pendingReqFrom) {
-		socket.emit('buddyRequest', socket.data.pendingReqFrom, (err: Error) => console.log(err) );
+		socket.emit('buddyRequest', socket.data.pendingReqFrom, (err: Error) => console.log(err));
+	}
+	if (socket.data.buddyProgress) {
+		socket.emit('buddyUpdate', userBuddy, socket.data.buddyProgress);
 	}
 
 	socket.on('getList', async (cb: (taskList: any) => void) => {
@@ -87,6 +105,9 @@ io.on('connection', (socket) => {
           );
 
 				console.log("Task added.");
+				
+				sendProgressToBuddy(progress);
+				
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
@@ -133,6 +154,9 @@ io.on('connection', (socket) => {
           );
 
 				console.log("Task updated.");
+
+				sendProgressToBuddy(progress);
+
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
@@ -177,6 +201,9 @@ io.on('connection', (socket) => {
           );
 
 				console.log("Task updated.");
+
+				sendProgressToBuddy(progress);
+
 				cb(response.value);
 			} else {
 				throw "Target list not found.";
@@ -185,31 +212,6 @@ io.on('connection', (socket) => {
 			console.log(err);
 		} finally {
 			await client.close();
-		}
-	});
-
-	socket.on('getBuddyProgress', async (cb: (buddyName: string, buddyProgress: number) => void) => {
-		try {
-			if (!socket.data.buddy) {
-				throw new Error('No buddy paired to user.');
-			}
-			const userBuddy = socket.data.buddy;
-			
-			await client.connect();
-			const db = client.db(process.env.MONGO_DB_NAME);
-			const collection = db.collection('users');
-			const buddy = await collection.findOne({ buddy_code: userBuddy });
-			
-			if (buddy) {
-				cb(buddy.buddy_code, Number(buddy.progress));
-			} else {
-				throw new Error('Could not fetch buddy from database.');
-			}
-
-		} catch (err) {
-			console.log(err);
-		} finally {
-			client.close();
 		}
 	});
 
@@ -254,14 +256,8 @@ io.on('connection', (socket) => {
 
 					// Update users with buddy's progress
 
-					socket.emit('buddyUpdate', 0.0);
-					const sockets = await io.fetchSockets();
-					for (const otherSocket of sockets) { // Send a buddy update if they're online
-						if (otherSocket.data.buddyCode === buddy.buddy_code) {
-							io.volatile.to(otherSocket.id).emit('buddyUpdate', 0.0);
-							break;
-						}
-					}
+					socket.emit('buddyUpdate', buddy.buddy_code, buddy.progress);
+					sendProgressToBuddy(user.progress);
 				} else { // Save request and notify buddy now or on next login
 					cb();
 					await collection.updateOne(
@@ -272,7 +268,7 @@ io.on('connection', (socket) => {
 					const sockets = await io.fetchSockets();
 					for (const otherSocket of sockets) { // Send a buddy request if they're online
 						if (otherSocket.data.buddyCode === buddy.buddy_code) {
-							io.volatile.to(otherSocket.id).emit('buddyRequest', { sender: userBuddyCode });
+							io.volatile.to(otherSocket.id).emit('buddyRequest', userBuddyCode, (err: Error) => console.log(err));
 							break;
 						}
 					}
@@ -305,10 +301,12 @@ io.on('connection', (socket) => {
 			}
 			
 			if (buddy) {
+				userBuddy = buddy.buddy_code;
+				
 				await collection.updateOne( // Set buddy for user
 					{ _id: userId },
 					{
-						$set: {buddy: buddy.buddy_code},
+						$set: {buddy: userBuddy},
 						$unset: { request_from: "" }
 					}
 				);
@@ -319,14 +317,9 @@ io.on('connection', (socket) => {
 				);
 
 				// send approval signal/progress report to user(s)
-				socket.emit('buddyUpdate', 0.0)
-				const sockets = await io.fetchSockets();
-				for (const otherSocket of sockets) { // Send a buddy update if they're online
-					if (otherSocket.data.buddyCode === buddy.buddy_code) {
-						io.volatile.to(otherSocket.id).emit('buddyUpdate', 0.0);
-						break;
-					}
-				}
+				socket.emit('buddyUpdate', userBuddy, buddy.progress);
+				sendProgressToBuddy(user.progress);
+
 			} else {
 				throw new Error('Could not fetch buddy from database.');
 			}

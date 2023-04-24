@@ -24,9 +24,7 @@ function SignUp() {
 
 		if (error) {
 			console.error(error);
-		} else { // TODO: implement custom usernames or generate buddy codes
-			socket.auth = { userId: data.user.id, progress: String(listProgress)};
-			socket.connect();
+		} else {
 			navigate('/');
 		}
 	};

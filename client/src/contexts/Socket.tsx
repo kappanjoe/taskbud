@@ -9,7 +9,6 @@ const SocketContext = createContext<SocketIOContext & AccountabilityContext>({
   isConnected: false,
   requestRecvd: false,
   handleBuddyApproval: () => {},
-  handleBuddyUpdate: () => {},
   isPaired: false,
   buddy: "",
   buddyProgress: 0.0
@@ -24,14 +23,16 @@ export const SocketContextProvider = ({ children }: Props) => {
   const [requestRecvd, setRequestRecvd] = useState<boolean>(false);
   const [isPaired, setIsPaired] = useState<boolean>(false);
   const [buddy, setBuddy] = useState<string>("");
-  const [buddyProgress, setBuddyProgress] = useState<number>(0.0);
+  const localBuddyProgress = Number(localStorage.getItem('buddyProgress'));
+  const [buddyProgress, setBuddyProgress] = useState<number>(localBuddyProgress || 0.0);
 
   const { session } = useAuth();
   
   const handleBuddyUpdate = (buddyName: string, buddyUpdate: number) => {
-		setIsPaired(buddyName !== "");
+    setIsPaired(true);
     setBuddy(buddyName);
 		setBuddyProgress(buddyUpdate);
+    localStorage.setItem('buddyProgress', String(buddyUpdate));
 	};
 
 	const handleBuddyRequest = (buddyName: string) => {
@@ -42,6 +43,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   const handleBuddyApproval = (approved: boolean) => {
     sendRequestReply(socket, buddy, approved);
     setRequestRecvd(false);
+    setIsPaired(approved);
   }
   
   useEffect(() => {
@@ -74,7 +76,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, handleBuddyUpdate, isPaired, buddy, buddyProgress }} >
+	return <SocketContext.Provider value={{ socket, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress }} >
 		{ children }
 	</SocketContext.Provider>
 };
