@@ -30,7 +30,7 @@ function TaskView(props: { task: Task }) {
     if (session) { updateTaskRemote(socket, newTask); }
   };
 
-  const handleTaskClick = (e: React.MouseEvent<HTMLLabelElement>) => {
+  const handleTaskClick = (e: React.MouseEvent<HTMLLabelElement | HTMLDivElement>) => {
     e.preventDefault();
     setIsOpen(!isOpen);
   };
@@ -50,7 +50,7 @@ function TaskView(props: { task: Task }) {
             { body }
           </label>
         </div>
-        <div className="task-icon-wrapper">
+        <div className="task-icon-wrapper" onClick={handleTaskClick}>
           { memo !== "" && <DocumentTextIcon className="task-memo icon"/> }
           { start && <CalendarIcon className="task-start icon"/> }
           { due && <FlagIcon className="task-due icon"/> }

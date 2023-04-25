@@ -42,7 +42,7 @@ io.on('connection', (socket) => {
 		let sockets = await io.fetchSockets();
 		for (const otherSocket of sockets) {
 			if (otherSocket.data.userName === userBuddy) {
-				io.to(otherSocket.id).emit('buddyUpdate', userBuddy, progress);
+				io.to(otherSocket.id).emit('buddyUpdate', userName, progress);
 				break;
 			}
 		}
