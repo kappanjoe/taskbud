@@ -1,7 +1,11 @@
-# TaskBud - _ccp7-solo-mvp.taskbud_
+# *_`task bud`_* - _ccp7-solo-mvp.taskbud_
 ### This project was created during Code Chrysalis 🦋 Part-Time Immersive Cohort 7.
 
 ---
+
+## What is *_`task bud`_*?
+
+*_`task bud`_* is a task management tool for holding yourself and your buddies accountable.
 
 <img alt="An iPhone screen shot of the task bud task management web app. A progress bar is displayed for the user and an accountability buddy." src="https://user-images.githubusercontent.com/6261485/234029152-cb1d752b-edfe-430a-bfa5-a36c3b55278a.png" width=300 />
 
@@ -68,6 +72,17 @@ Under Construction 😜
 ### Usage
 
 </details>
+
+## Future Plans
+
+- Buddy interactions
+- Push notifications
+- Streamlined UI (modal editor vs. separate page, multiple selection)
+- Task categories
+- Daily lists
+- Progress tracking over weekly timespans
+
+## Resources
 
 ## License
 ©️ 2023 kappanjoe - All rights reserved. <br/>
