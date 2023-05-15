@@ -2,6 +2,7 @@ export interface ServerToClientEvents {
 	buddyRequest: (buddyName: string) => void;
 	buddyUpdate: (buddyName: string, buddyProgress: number) => void;
 	usernameUpdate: (userName: string) => void;
+	forceReset: () => void;
 }
 
 export interface ClientToServerEvents {

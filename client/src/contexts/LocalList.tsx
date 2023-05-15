@@ -25,7 +25,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const [selectedTask, setSelectedTask] = useState<Task>(new Task());
 	const [listProgress, setListProgress] = useState<number>(0.0);
 	const { session } = useAuth();
-	const { socket, isConnected } = useSocket();
+	const { socket, isConnected, resetReqd, setResetReqd } = useSocket();
 
 	useEffect(() => {
 		if (session && isConnected) {
@@ -33,6 +33,12 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		}
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [session, isConnected]);
+	
+	useEffect(() => {
+		if (resetReqd) {
+			loadTaskList(socket, setTaskList, resetReqd);
+		}
+	}, [resetReqd])
 
 	useEffect(() => {
 		setListProgress(taskList.weeklyCompleted / taskList.weeklyTotal || 0.0);
