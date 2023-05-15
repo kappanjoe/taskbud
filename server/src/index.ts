@@ -54,3 +54,5 @@ io.on('connection', (socket) => {
 	socket.on('denyRequest', denyRequest(userId));
 
 });
+
+console.log("Sockets engaging on Port ", PORT);

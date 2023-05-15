@@ -6,7 +6,5 @@ const URL = process.env.NODE_ENV === 'production'
   : 'http://localhost:4000' as Partial<ManagerOptions & SocketOptions>;
 
 export const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io(URL, {
-  autoConnect: false,
-  transports: ["websocket"],
-  upgrade: false
+  autoConnect: false
 });
