@@ -1,15 +1,15 @@
-import React, { useEffect, useState, useTransition } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSocket } from '../contexts/Socket';
 
 interface Props {
-  completed: number;
+  progress: number;
   isBuddy: boolean;
 }
 
-function ProgressBar({ completed, isBuddy }: Props) {
+function ProgressBar({ progress, isBuddy }: Props) {
   const { buddy, username } = useSocket();
   const [isPending, setIsPending] = useState(true);
-  const percent: string = (completed * 100).toFixed(0);
+  const percent: string = (progress * 100).toFixed(0);
 
   useEffect(() => {
     const timeoutId = setTimeout(() => setIsPending(false), 100);

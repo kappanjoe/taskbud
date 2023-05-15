@@ -3,20 +3,57 @@ import { Document } from "mongodb";
 import { client } from "../mongodb";
 import { sendProgressToBuddy } from "./buddyController";
 
-export const calcProgress = (tasks: Array<{completed: boolean}>) => {
-  let allTasksCt = 0;
-	let completedCt = 0;
+export const resetGlobalWeeklyProgress = () => {
+  return async (cb: (_: boolean) => void) => {
+    let didFail = false;
+    try {
+      await client.connect();
+      const db = client.db(process.env.MONGO_DB_NAME)
+      const listCollection = db.collection('task-lists');
+      const userCollection = db.collection('users');
+      const taskLists = listCollection.find({});
 
-	tasks.forEach((task) => {
-		allTasksCt++;
-		if (task.completed) { completedCt++; }
-	});
+      taskLists.forEach((list) => {
+        let newTotal = list.weeklyTotal - list.weeklyCompleted;
+        let newCompleted = 0;
 
-	return completedCt / allTasksCt || 0.0;
+        listCollection.updateOne(
+          { _id: list._id },
+          { $set: {
+              weeklyTotal: newTotal,
+              weeklyCompleted: newCompleted
+            }
+          }
+        )
+        .then(() => {
+          userCollection.updateOne(
+            { _id : list.owner_id },
+            { $set: {
+                progress: newCompleted / newTotal
+              }
+            }
+          );
+          return;
+        });
+
+      })
+      .then(() => {
+        console.log('Progress reset for all lists.');
+        return;
+      });
+      
+    } catch (err) {
+      didFail = true;
+      console.log(err);
+    } finally {
+      await client.close();
+      cb(didFail);
+    }
+  };
 };
 
 export const getList = (userId: string) => {
-  return async (cb: (taskList: any) => void) => {
+  return async (cb: (taskList: Document) => void) => {
     try {
       await client.connect();
       const response = await client
@@ -35,7 +72,7 @@ export const getList = (userId: string) => {
 };
 
 export const addTask = (userId: any, userName: string, userBuddy: string | undefined, io: Server) => {
-  return async (task: Document, cb: (taskList: any) => void) => {
+  return async (task: Document, cb: (taskList: Document) => void) => {
     try {
       await client.connect();
       const db = client.db(process.env.MONGO_DB_NAME);
@@ -47,10 +84,15 @@ export const addTask = (userId: any, userName: string, userBuddy: string | undef
       let newList: Document;
 
       if (oldList) {
+        const newTotal = oldList.weeklyTotal + 1;
+        const progress = oldList.weeklyCompleted / newTotal || 0.0;
+
         newList = {
           _id: oldList._id,
           owner_id: oldList.owner_id,
-          tasks: oldList.tasks.concat(task)
+          tasks: oldList.tasks.concat(task),
+          weeklyCompleted: oldList.weeklyCompleted,
+          weeklyTotal: newTotal
         };
 
         const response = await db.collection('task-lists')
@@ -60,7 +102,6 @@ export const addTask = (userId: any, userName: string, userBuddy: string | undef
             { returnDocument: "after" }
           );
 
-        const progress = calcProgress(newList.tasks);
         await db.collection('users')
           .findOneAndUpdate(
             { _id: userId },
@@ -71,7 +112,7 @@ export const addTask = (userId: any, userName: string, userBuddy: string | undef
         
         sendProgressToBuddy(progress, userName, userBuddy, io);
         
-        cb(response.value);
+        cb(response.value!);
       } else {
         throw "Target list not found.";
       }
@@ -94,14 +135,19 @@ export const updateTask = (userId: any, userName: string, userBuddy: string | un
 			let newList: Document;
 
 			if (oldList) {
-				newList = {
+        const newCompleted = task.completed ? oldList.weeklyCompleted + 1 : oldList.weeklyCompleted - 1;
+        const progress = newCompleted / oldList.weeklyTotal || 0.0;
+				
+        newList = {
 					_id: oldList._id,
 					owner_id: oldList.owner_id,
 					tasks: oldList.tasks.map( (oldTask: Document) => {
 							return oldTask._id === task._id
 								? task
 								: oldTask;
-						})
+						}),
+          weeklyCompleted: newCompleted,
+          weeklyTotal: oldList.weeklyTotal
 				};
 
 				const response = await db.collection('task-lists')
@@ -110,9 +156,8 @@ export const updateTask = (userId: any, userName: string, userBuddy: string | un
             newList,
             { returnDocument: "after" }
           );
-
-        const progress = calcProgress(newList.tasks);
-				await db.collection('users')
+        
+        await db.collection('users')
 					.findOneAndUpdate(
             { _id: userId },
             { $set: { progress: progress } }
@@ -135,22 +180,29 @@ export const updateTask = (userId: any, userName: string, userBuddy: string | un
 };
 
 export const deleteTask = (userId: any, userName: string, userBuddy: string | undefined, io: Server) => {
-  return async (taskId: string, cb: (taskList: any) => void) => {
+  return async (taskId: string, cb: (taskList: Document) => void) => {
 		try {
 			await client.connect();
       const db = client.db(process.env.MONGO_DB_NAME);
 			const oldList = await db.collection('task-lists')	
 				.findOne({ owner_id: userId });
 
-			let newList: Document;
-
 			if (oldList) {
-				newList = {
+        const deletionTarget = oldList.tasks.find( (task: Document) => {
+          return task._id === taskId;
+        });
+        if (!deletionTarget) { throw "Target task not found." };
+        
+        const newTotal = deletionTarget.completed ? oldList.weeklyTotal : oldList.weeklyTotal - 1;
+        const progress = oldList.weeklyCompleted / newTotal || 0.0;
+        let newList = {
 					_id: oldList._id,
 					owner_id: oldList.owner_id,
 					tasks: oldList.tasks.filter( (oldTask: Document) => {
 							return oldTask._id !== taskId;
-						})
+						}),
+          weeklyCompleted: oldList.weeklyCompleted,
+          weeklyTotal: newTotal
 				};
 
 				const response = await db.collection('task-lists')
@@ -160,18 +212,17 @@ export const deleteTask = (userId: any, userName: string, userBuddy: string | un
             { returnDocument: "after" }
           );
 
-        const progress = calcProgress(newList.tasks);
         await db.collection('users')
           .findOneAndUpdate(
             { _id: userId },
             { $set: { progress: progress } }
           );
 
-				console.log("Task updated.");
+				console.log("Task deleted.");
 
 				sendProgressToBuddy(progress, userName, userBuddy, io);
 
-				cb(response.value);
+				cb(response.value!);
 			} else {
 				throw "Target list not found.";
 			}
