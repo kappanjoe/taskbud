@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
 	if (socket.data.pendingReqFrom) {
 		socket.emit('buddyRequest', socket.data.pendingReqFrom, (err: Error) => console.log(err));
 	}
-	if (socket.data.buddyProgress) {
+	if (userBuddy) {
 		socket.emit('buddyUpdate', userBuddy, socket.data.buddyProgress);
 	}
 	if (socket.data.userName) {
