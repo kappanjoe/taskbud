@@ -51,7 +51,7 @@ exports.ResetGlobalWeeklyProg = async function() {
       userCollection.updateOne(
         { _id : list.owner_id },
         { $set: {
-            progress: newCompleted / newTotal
+            progress: newCompleted / newTotal || 0.0
           }
         }
       );
