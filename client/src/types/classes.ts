@@ -20,10 +20,14 @@ export class TaskList {
   _id: string;
   tasks: Task[];
   owner_id?: string;
+  weeklyTotal: number;
+  weeklyCompleted: number;
 
   constructor(owner?: string) {
     this._id = "";
     this.tasks = [];
     this.owner_id = owner;
+    this.weeklyTotal = 0;
+    this.weeklyCompleted = 0;
   };
 };

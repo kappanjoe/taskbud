@@ -31,6 +31,5 @@ export interface TaskListContext {
   selectedTask: Task;
   setSelectedTask: Dispatch<SetStateAction<Task>> | undefined;
   listProgress: number;
-  updateProgressLocal: () => void;
   clearTaskListLocal: () => void;
 };

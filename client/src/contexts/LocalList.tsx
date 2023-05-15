@@ -13,7 +13,6 @@ const LocalListContext = createContext<TaskListContext>({
 	selectedTask: new Task(),
 	setSelectedTask: undefined,
 	listProgress: 0.0,
-	updateProgressLocal: () => {},
 	clearTaskListLocal: () => {}
 });
 
@@ -28,13 +27,6 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	const { session } = useAuth();
 	const { socket, isConnected } = useSocket();
 
-	// useEffect(() => {
-	// 	const localList = localStorage.getItem('localList');
-	// 	if (localList !== null) {
-	// 		setTaskList(JSON.parse(localList));
-	// 	}
-	// }, []);
-
 	useEffect(() => {
 		if (session && isConnected) {
 			loadTaskList(socket, setTaskList);
@@ -43,13 +35,14 @@ export const LocalListContextProvider = ({ children }: Props) => {
 	}, [session, isConnected]);
 
 	useEffect(() => {
-		updateProgressLocal();
+		setListProgress(taskList.weeklyCompleted / taskList.weeklyTotal || 0.0);
 	// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, [taskList]);
 
 	const addTaskLocal = (newTask: Task) => {
 		let newList: TaskList = Object.assign(new TaskList(), taskList);
 
+		newList.weeklyTotal++;
 		newList.tasks = [ ...taskList.tasks, newTask ];
 
 		setTaskList(newList);
@@ -60,6 +53,10 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		let newList = new TaskList();
 		
 		newList._id = taskList._id;
+		newList.weeklyTotal = taskList.weeklyTotal;
+		newList.weeklyCompleted = updatedTask.completed
+			? taskList.weeklyCompleted + 1
+			: taskList.weeklyCompleted - 1;
 		newList.tasks = taskList.tasks.map(task => {
 			return task._id === updatedTask._id
 				? updatedTask
@@ -74,23 +71,17 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		let newList = Object.assign(new TaskList(), taskList);
 
 		newList.tasks = taskList.tasks.filter(task => {
-			return task._id !== taskId;
+			if (task._id === taskId)　{
+				if (!task.completed) {
+					newList.weeklyTotal--;
+				}
+				return false;
+			}
+			return true;
 		});
 
 		setTaskList(newList);
 		localStorage.setItem('localList', JSON.stringify(newList));
-	};
-
-	const updateProgressLocal = () => {
-		let allTasksCt = 0;
-		let completedCt = 0;
-
-		taskList.tasks.forEach( task => {
-			allTasksCt++;
-			if (task.completed) { completedCt++; }
-		});
-
-		setListProgress(completedCt / allTasksCt || 0.0);
 	};
 
 	const clearTaskListLocal = () => {
@@ -98,7 +89,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		setTaskList(new TaskList());
 	};
 
-	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask, listProgress, updateProgressLocal, clearTaskListLocal} } >
+	return <LocalListContext.Provider value={ {taskList, addTaskLocal, updateTaskLocal, deleteTaskLocal, selectedTask, setSelectedTask, listProgress, clearTaskListLocal} } >
 		{ children }
 	</LocalListContext.Provider>
 };
