@@ -3,19 +3,19 @@ import { Task, TaskList } from "./types/classes";
 
 export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void, force: boolean = false) => {
   try {
-    const localList = localStorage.getItem('localList');
-    if (localList === null || force) {
-      console.warn('User task list could not be loaded from localStorage.');
+    // const localList = localStorage.getItem('localList');
+    // if (localList === null || force) {
+      // console.warn('User task list could not be loaded from localStorage.');
       socket.emit('getList', (taskList: TaskList) => {
         setTaskList(taskList);
-        localStorage.setItem('localList', JSON.stringify(taskList));
+        // localStorage.setItem('localList', JSON.stringify(taskList));
         console.log('Task list downloaded.');
       });
-    } else {
-      let list = JSON.parse(localList);
-      setTaskList(list);
-      console.log('User task list loaded from localStorage.');
-    }
+    // } else {
+    //   let list = JSON.parse(localList);
+    //   setTaskList(list);
+    //   console.log('User task list loaded from localStorage.');
+    // }
   } catch (err) {
     console.error(err);
   }

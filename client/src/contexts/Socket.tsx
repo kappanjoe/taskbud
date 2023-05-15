@@ -38,7 +38,7 @@ export const SocketContextProvider = ({ children }: Props) => {
     setIsPaired(true);
     setBuddy(buddyName);
 		setBuddyProgress(buddyUpdate);
-    localStorage.setItem('buddyProgress', String(buddyUpdate));
+    // localStorage.setItem('buddyProgress', String(buddyUpdate));
 	};
 
 	const handleBuddyRequest = (buddyName: string) => {

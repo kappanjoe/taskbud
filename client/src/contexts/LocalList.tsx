@@ -52,7 +52,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		newList.tasks = [ ...taskList.tasks, newTask ];
 
 		setTaskList(newList);
-		localStorage.setItem('localList', JSON.stringify(newList));
+		// localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
 	const updateTaskLocal = (updatedTask: Task) => {
@@ -70,7 +70,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		});
 
 		setTaskList(newList);
-		localStorage.setItem('localList', JSON.stringify(newList));
+		// localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
 	const deleteTaskLocal = (taskId: string) => {
@@ -87,7 +87,7 @@ export const LocalListContextProvider = ({ children }: Props) => {
 		});
 
 		setTaskList(newList);
-		localStorage.setItem('localList', JSON.stringify(newList));
+		// localStorage.setItem('localList', JSON.stringify(newList));
 	};
 
 	const clearTaskListLocal = () => {
