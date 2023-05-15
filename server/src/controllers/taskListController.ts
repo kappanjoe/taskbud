@@ -3,55 +3,6 @@ import { Document } from "mongodb";
 import { client } from "../mongodb";
 import { sendProgressToBuddy } from "./buddyController";
 
-export const resetGlobalWeeklyProgress = () => {
-  return async (cb: (_: boolean) => void) => {
-    let didFail = false;
-    try {
-      await client.connect();
-      const db = client.db(process.env.MONGO_DB_NAME)
-      const listCollection = db.collection('task-lists');
-      const userCollection = db.collection('users');
-      const taskLists = listCollection.find({});
-
-      taskLists.forEach((list) => {
-        let newTotal = list.weeklyTotal - list.weeklyCompleted;
-        let newCompleted = 0;
-
-        listCollection.updateOne(
-          { _id: list._id },
-          { $set: {
-              weeklyTotal: newTotal,
-              weeklyCompleted: newCompleted
-            }
-          }
-        )
-        .then(() => {
-          userCollection.updateOne(
-            { _id : list.owner_id },
-            { $set: {
-                progress: newCompleted / newTotal
-              }
-            }
-          );
-          return;
-        });
-
-      })
-      .then(() => {
-        console.log('Progress reset for all lists.');
-        return;
-      });
-      
-    } catch (err) {
-      didFail = true;
-      console.log(err);
-    } finally {
-      await client.close();
-      cb(didFail);
-    }
-  };
-};
-
 export const getList = (userId: string) => {
   return async (cb: (taskList: Document) => void) => {
     try {

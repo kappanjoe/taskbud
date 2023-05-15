@@ -1,4 +1,5 @@
 import { Server } from 'socket.io';
+import cron from 'node-cron';
 require('dotenv').config();
 
 import { approveRequest, denyRequest, sendBuddyRequest } from './controllers/buddyController';
@@ -16,6 +17,8 @@ const io = new Server(PORT, {
 });
 
 io.use(setupUser);
+
+cron.schedule('1 0 * * *', () => io.emit('forceReset'), { timezone: 'Asia/Tokyo' });
 
 io.on('connection', (socket) => {
 	const userId = socket.handshake.auth.userId;

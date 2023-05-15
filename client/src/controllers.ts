@@ -1,10 +1,10 @@
 import { Socket } from "socket.io-client";
 import { Task, TaskList } from "./types/classes";
 
-export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void) => {
+export const loadTaskList = (socket: Socket, setTaskList: (value: React.SetStateAction<TaskList>) => void, force: boolean = false) => {
   try {
     const localList = localStorage.getItem('localList');
-    if (localList === null) {
+    if (localList === null || force) {
       console.warn('User task list could not be loaded from localStorage.');
       socket.emit('getList', (taskList: TaskList) => {
         setTaskList(taskList);

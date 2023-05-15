@@ -13,7 +13,9 @@ const SocketContext = createContext<SocketIOContext & AccountabilityContext>({
   handleBuddyApproval: () => {},
   isPaired: false,
   buddy: "",
-  buddyProgress: 0.0
+  buddyProgress: 0.0,
+  resetReqd: false,
+  setResetReqd: () => {}
 });
 
 type Props = {
@@ -28,6 +30,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   const [buddy, setBuddy] = useState<string>("");
   const localBuddyProgress = Number(localStorage.getItem('buddyProgress'));
   const [buddyProgress, setBuddyProgress] = useState<number>(localBuddyProgress || 0.0);
+  const [resetReqd, setResetReqd] = useState<boolean>(false);
 
   const { session } = useAuth();
   
@@ -52,6 +55,10 @@ export const SocketContextProvider = ({ children }: Props) => {
   const handleUsernameUpdate = (userName: string) => {
     setUsername(userName);
   };
+
+  const handleNightlyReset = () => {
+    setResetReqd(true);
+  }
   
   useEffect(() => {
     function onConnect() {
@@ -74,6 +81,7 @@ export const SocketContextProvider = ({ children }: Props) => {
     socket.on('usernameUpdate', handleUsernameUpdate);
     socket.on('buddyUpdate', handleBuddyUpdate);
     socket.on('buddyRequest', handleBuddyRequest);
+    socket.on('forceReset', handleNightlyReset);
 
     return () => {
       socket.off('connect', onConnect);
@@ -81,11 +89,12 @@ export const SocketContextProvider = ({ children }: Props) => {
       socket.off('usernameUpdate', handleUsernameUpdate);
       socket.off('buddyUpdate', handleBuddyUpdate);
       socket.off('buddyRequest', handleBuddyRequest);
+      socket.off('forceReset', handleNightlyReset);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-	return <SocketContext.Provider value={{ socket, username, setUsername, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress }} >
+	return <SocketContext.Provider value={{ socket, username, setUsername, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress, resetReqd, setResetReqd }} >
 		{ children }
 	</SocketContext.Provider>
 };

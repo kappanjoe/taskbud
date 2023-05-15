@@ -13,6 +13,8 @@ export interface SocketIOContext {
   username: string;
   setUsername: Dispatch<SetStateAction<string>>;
   isConnected: boolean;
+  resetReqd: boolean;
+  setResetReqd: Dispatch<SetStateAction<boolean>>;
 };
 
 export interface AccountabilityContext {
