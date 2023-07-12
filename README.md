@@ -1,5 +1,4 @@
-# *_`task bud`_* - _ccp7-solo-mvp.taskbud_
-### This project was created during Code Chrysalis 🦋 Part-Time Immersive Cohort 7.
+# *_`task bud`_* 
 
 ---
 
