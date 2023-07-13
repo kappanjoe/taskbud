@@ -2,23 +2,26 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/Auth';
+import './Form.css';
 
 function LogIn() {
 	const navigate = useNavigate();
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const { auth } = useAuth();
 
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		setErrorMsg('');
 		const { error } = await auth.signInWithPassword({ email, password });
 
 		if (error) {
-			console.error(error);
+			setErrorMsg(error.message);
+			console.error(error.message);
 		} else {
 			navigate('/');
 		}
@@ -61,6 +64,15 @@ function LogIn() {
 					/>
 				</label>
 				<br/>
+				{
+					errorMsg !== '' &&
+						<>
+							<div className="error-msg">
+								{ errorMsg }
+							</div>
+							<br/>
+						</>
+				}
 				<button className="button-primary" type="submit">Log In</button>
 			</form>
 			<p>

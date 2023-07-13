@@ -11,17 +11,19 @@ function SignUp() {
 
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [errorMsg, setErrorMsg] = useState('');
 
 	const { auth } = useAuth();
 	const { username, setUsername } = useSocket();
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-
+		setErrorMsg('');
 		const { error } = await auth.signUp({ email, password });
 
 		if (error) {
-			console.error(error);
+			setErrorMsg(error.message);
+			console.error(error.message);
 		} else {
 			navigate('/');
 		}
@@ -79,6 +81,15 @@ function SignUp() {
 					/>
 				</label>
 				<br/>
+				{
+					errorMsg !== '' &&
+						<>
+							<div className="error-msg">
+								{ errorMsg }
+							</div>
+							<br/>
+						</>
+				}
 				<button className="button-primary" type="submit">Sign Up</button>
 			</form>
 			<p>

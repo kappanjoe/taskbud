@@ -98,3 +98,10 @@ input, textarea {
 .buddy-code-input {
   width: 20pt;
 }
+
+.error-msg {
+  color: #470000;
+  background-color: #ffcbd3;
+  padding: 6pt 10pt;
+  border-radius: 4pt;
+}
