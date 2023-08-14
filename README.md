@@ -1,7 +1,5 @@
 # *_`task bud`_* 
 
----
-
 ## What is *_`task bud`_*?
 
 *_`task bud`_* is a task management tool for holding yourself and your buddies accountable.
@@ -84,5 +82,9 @@ Under Construction 😜
 ## Resources
 
 ## License
-©️ 2023 kappanjoe - All rights reserved. <br/>
-This repository is published for demonstrative purposes only.
+[`task bud` is licensed under the PolyForm Shield License 1.0.0](LICENSE.md)
+
+### Required Notices: 
+> Required Notice: Copyright (c) kappanjoe (http://github.com/kappanjoe)
+
+> Licensor Line of Business: taskbud Task Management Software (http://taskbud.onrender.com)
