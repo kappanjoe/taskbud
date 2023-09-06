@@ -11,6 +11,8 @@ const SocketContext = createContext<SocketIOContext & AccountabilityContext>({
   isConnected: false,
   requestRecvd: false,
   handleBuddyApproval: () => {},
+  requestDenied: false,
+  handleRequestDenied: () => {},
   isPaired: false,
   buddy: "",
   buddyProgress: 0.0,
@@ -26,6 +28,7 @@ export const SocketContextProvider = ({ children }: Props) => {
   const [username, setUsername] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
   const [requestRecvd, setRequestRecvd] = useState<boolean>(false);
+  const [requestDenied, setRequestDenied] = useState<boolean>(false);
   const [isPaired, setIsPaired] = useState<boolean>(false);
   const [buddy, setBuddy] = useState<string>("");
   const localBuddyProgress = Number(localStorage.getItem('buddyProgress'));
@@ -50,6 +53,10 @@ export const SocketContextProvider = ({ children }: Props) => {
     sendRequestReply(socket, buddy, approved);
     setRequestRecvd(false);
     setIsPaired(approved);
+  };
+
+  const handleRequestDenied = (denied: boolean = true) => {
+    setRequestDenied(denied);
   };
 
   const handleUsernameUpdate = (userName: string) => {
@@ -81,6 +88,7 @@ export const SocketContextProvider = ({ children }: Props) => {
     socket.on('usernameUpdate', handleUsernameUpdate);
     socket.on('buddyUpdate', handleBuddyUpdate);
     socket.on('buddyRequest', handleBuddyRequest);
+    socket.on('requestDenied', handleRequestDenied);
     socket.on('forceReset', handleNightlyReset);
 
     return () => {
@@ -89,12 +97,13 @@ export const SocketContextProvider = ({ children }: Props) => {
       socket.off('usernameUpdate', handleUsernameUpdate);
       socket.off('buddyUpdate', handleBuddyUpdate);
       socket.off('buddyRequest', handleBuddyRequest);
+      socket.off('requestDenied', handleRequestDenied);
       socket.off('forceReset', handleNightlyReset);
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [session]);
 
-	return <SocketContext.Provider value={{ socket, username, setUsername, isConnected, requestRecvd, handleBuddyApproval, isPaired, buddy, buddyProgress, resetReqd, setResetReqd }} >
+	return <SocketContext.Provider value={{ socket, username, setUsername, isConnected, requestRecvd, handleBuddyApproval, requestDenied, handleRequestDenied, isPaired, buddy, buddyProgress, resetReqd, setResetReqd }} >
 		{ children }
 	</SocketContext.Provider>
 };
