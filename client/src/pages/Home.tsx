@@ -4,6 +4,7 @@ import { useAuth } from '../contexts/Auth';
 import { useSocket } from '../contexts/Socket';
 import { useLocalList } from '../contexts/LocalList';
 import RequestApprovalDialog from '../components/RequestApprovalDialog';
+import RequestDeniedDialog from '../components/RequestDeniedDialog';
 import ProgressView from '../components/ProgressView';
 import TaskListView from '../components/TaskListView';
 
@@ -27,6 +28,7 @@ function Home() {
 	return (
 		<div className="home-container">
 			{ <RequestApprovalDialog/> }
+			{ <RequestDeniedDialog/> }
 			<div className="home-navbar">
 				<ArrowRightOnRectangleIcon className="logout nav-icon" onClick={handleLogout} />
 				<h1 className="home-header">task bud</h1>
