@@ -44,7 +44,7 @@ export const sendBuddyRequest = (userId: any, io: Server, socket: Socket) => {
 					await collection.updateOne( // Set buddy for user
 						{ _id: userId },
 						{
-							$set: {buddy: buddy.username},
+							$set: { buddy: buddy.username },
 							$unset: { request_from: "" }
 						}
 					);
@@ -108,7 +108,7 @@ export const approveRequest = (userId: any, userBuddy: string, io: Server, socke
 				await collection.updateOne( // Set buddy for user
 					{ _id: userId },
 					{
-						$set: {buddy: userBuddy},
+						$set: { buddy: userBuddy },
 						$unset: { request_from: "" }
 					}
 				);
@@ -134,7 +134,7 @@ export const approveRequest = (userId: any, userBuddy: string, io: Server, socke
 	};
 };
 
-export const denyRequest = (userId: any) => {
+export const denyRequest = (userId: any, io: Server) => {
   return async (buddyName: string) => {
 		try {
 			await client.connect();
@@ -142,7 +142,6 @@ export const denyRequest = (userId: any) => {
 			const collection = db.collection('users');
 
 			const user = await collection.findOne({ _id: userId });
-			// const buddy = await collection.findOne({ username: buddyName });
 			
 			if (!user) {
 				throw new Error('Could not fetch user from database.');
@@ -156,20 +155,16 @@ export const denyRequest = (userId: any) => {
 							$unset: { request_from: "" }
 						}
 					);
+
+					const sockets = await io.fetchSockets();
+					for (const otherSocket of sockets) { // Notify sender of denial
+						if (otherSocket.data.userName === buddyName) {
+							io.to(otherSocket.id).emit('requestDenied', (err: Error) => console.log(err));
+							break;
+						}
+					}
 				}
 			}
-			
-
-			// if (buddy) { // TODO: Notify buddy of request denial
-
-				// await collection.updateOne( // Set user as buddy for buddy
-				// 	{ _id: buddy._id },
-				// 	{ $set: { buddy: user.username } }
-				// );
-
-			// } else {
-			// 	throw new Error('Could not fetch buddy from database.');
-			// }
 
 		} catch (err) {
 			console.log(err);
