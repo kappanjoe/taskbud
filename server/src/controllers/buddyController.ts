@@ -142,6 +142,7 @@ export const denyRequest = (userId: any, io: Server) => {
 			const collection = db.collection('users');
 
 			const user = await collection.findOne({ _id: userId });
+			const buddy = await collection.findOne({ username: buddyName });
 			
 			if (!user) {
 				throw new Error('Could not fetch user from database.');
@@ -158,7 +159,8 @@ export const denyRequest = (userId: any, io: Server) => {
 
 					const sockets = await io.fetchSockets();
 					for (const otherSocket of sockets) { // Notify sender of denial
-						if (otherSocket.data.userName === buddyName) {
+						if (!buddy) { throw new Error('Buddy named ' + buddyName + ' could not be found.'); }
+						if (otherSocket.data.userName === buddy.username) {
 							io.to(otherSocket.id).emit('requestDenied', (err: Error) => console.log(err));
 							break;
 						}
