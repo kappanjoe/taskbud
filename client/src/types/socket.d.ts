@@ -1,5 +1,6 @@
 export interface ServerToClientEvents {
 	buddyRequest: (buddyName: string) => void;
+	requestDenied: (denied?: boolean) => void;
 	buddyUpdate: (buddyName: string, buddyProgress: number) => void;
 	usernameUpdate: (userName: string) => void;
 	forceReset: () => void;
