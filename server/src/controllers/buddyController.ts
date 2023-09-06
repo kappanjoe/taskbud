@@ -158,10 +158,10 @@ export const denyRequest = (userId: any, io: Server) => {
 					);
 
 					const sockets = await io.fetchSockets();
+					if (!buddy) { throw new Error('Buddy named ' + buddyName + ' could not be found.'); }
 					for (const otherSocket of sockets) { // Notify sender of denial
-						if (!buddy) { throw new Error('Buddy named ' + buddyName + ' could not be found.'); }
 						if (otherSocket.data.userName === buddy.username) {
-							io.to(otherSocket.id).emit('requestDenied', (err: Error) => console.log(err));
+							io.to(otherSocket.id).emit('requestDenied');
 							break;
 						}
 					}
