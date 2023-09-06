@@ -51,7 +51,7 @@ io.on('connection', (socket) => {
 
 	socket.on('approveRequest', approveRequest(userId, userBuddy, io, socket));
 
-	socket.on('denyRequest', denyRequest(userId));
+	socket.on('denyRequest', denyRequest(userId, io));
 
 });
 
