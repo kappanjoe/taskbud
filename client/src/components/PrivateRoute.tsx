@@ -7,7 +7,7 @@ const PrivateRoute = () => {
 	const { session, isLoading } = useAuth();
 
 	return !isLoading
-		? (session ? <Outlet /> : <Navigate to='/signup' />)
+		? (session ? <Outlet /> : <Navigate to='/welcome' />)
 		: null;
 
 };
