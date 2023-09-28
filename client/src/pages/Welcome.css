@@ -1,0 +1,14 @@
+.welcome-wrapper {
+  width: calc(100% - 100pt);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0 50pt;
+  height: 100vh;
+}
+
+.welcome-screenshot {
+  max-width: calc(100% + 40pt);
+  align-self: center;
+}
