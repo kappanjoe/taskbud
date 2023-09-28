@@ -16,6 +16,7 @@ import AddTask from '../pages/AddTask';
 import SignUp from '../pages/SignUp';
 
 import './App.css';
+import Welcome from '../pages/Welcome';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <SocketContextProvider>
             <LocalListContextProvider>
               <Routes>
+                <Route path="/welcome" element={ <Welcome/> } />
                 <Route path="/" element={ <PrivateRoute/> }>
                   <Route path="/" element= { <Home/> }/>
                 </Route>
