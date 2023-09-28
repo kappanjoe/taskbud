@@ -1,8 +1,10 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Welcome.css';
 import screenshot from '../images/taskbud-screenshot.png';
 
 function Welcome() {
+  let navigate = useNavigate();
   return (
     <>
       <div className="welcome-wrapper">
@@ -17,8 +19,8 @@ function Welcome() {
             your friends accountable.
           </p>
           <br/>
-          <button className="button-primary" type="submit">Sign Up</button>
-          <button className="button-secondary" type="submit">Log In</button>
+          <button className="button-primary" type="submit" onClick={ () => navigate("/signup") }>Sign Up</button>
+          <button className="button-secondary" type="submit" onClick={ () => navigate("/login") }>Log In</button>
         </div>
         <img className="welcome-screenshot" src={screenshot} alt=""/>
       </div>
