@@ -15,6 +15,17 @@
   margin: 2pt;
 }
 
+.button-secondary {
+  padding: 4pt 8pt;
+  border: 0;
+  border-radius: 4pt;
+  font-size: large;
+  font-weight: 500;
+  background-color: rgb(255, 245, 230);
+  color: darkslategray;
+  margin: 2pt;
+}
+
 .button-destructive {
   padding: 4pt 8pt;
   border: 0;
